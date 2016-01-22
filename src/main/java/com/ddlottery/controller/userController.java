@@ -5,6 +5,7 @@ import com.ddlottery.service.DDuserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,6 +70,38 @@ public class userController {
         }
         return map;
     }
+    @RequestMapping(value = "/islogin")
+    @ResponseBody
+    public Map islogin(@CookieValue(value = "uid",defaultValue = "",required=false) Integer uid
+    ){
+        Map<String,Object> map = new HashMap<String, Object>();
+        if(uid==null) {
+            map.put("code", -1);
+            map.put("msg", "未登录");
+        }else {
+            map.put("code", 0);
+            map.put("msg", "已登录");
+        }
+        return map;
+    }
 
+    @RequestMapping(value = "/edituser")
+    @ResponseBody
+    public Map edituser(@RequestParam(value="uid",defaultValue = "",required=false) Integer uid,
+                        @RequestParam(value="nickname",defaultValue = "",required=false) String nickname,
+                        @RequestParam(value="bigimage",defaultValue = "",required=false) String bigimage,
+                        @RequestParam(value="smallimage",defaultValue = "",required=false) String smallimage
+    ) {
+
+        DDuser user = new DDuser();
+        user.setUid(uid);
+        user.setNickname(nickname);
+        user.setBigimg(bigimage);
+        user.setSmallimg(smallimage);
+        Integer code = DDuserService.editUser(user);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        return map;
+    }
 
 }

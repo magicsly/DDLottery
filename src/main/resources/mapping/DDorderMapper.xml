@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddlottery.dao.DDorderMapper" >
+  <resultMap id="BaseResultMap" type="com.ddlottery.model.DDorder" >
+    <id column="oid" property="oid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="lot" property="lot" jdbcType="INTEGER" />
+    <result column="play" property="play" jdbcType="INTEGER" />
+    <result column="str" property="str" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="INTEGER" />
+    <result column="multiple" property="multiple" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="REAL" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="isprint" property="isprint" jdbcType="TINYINT" />
+    <result column="iswin" property="iswin" jdbcType="TINYINT" />
+    <result column="bonus" property="bonus" jdbcType="REAL" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtime" property="printtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    oid, uid, bid, lot, play, str, num, multiple, money, content, isprint, iswin, bonus, 
+    state, creattime, closetime, printtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_order
+    where oid = #{oid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_order
+    where oid = #{oid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ddlottery.model.DDorder" >
+    insert into dd_order (oid, uid, bid, 
+      lot, play, str, num, 
+      multiple, money, content, 
+      isprint, iswin, bonus, 
+      state, creattime, closetime, 
+      printtime)
+    values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, 
+      #{lot,jdbcType=INTEGER}, #{play,jdbcType=INTEGER}, #{str,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
+      #{multiple,jdbcType=INTEGER}, #{money,jdbcType=REAL}, #{content,jdbcType=VARCHAR}, 
+      #{isprint,jdbcType=TINYINT}, #{iswin,jdbcType=TINYINT}, #{bonus,jdbcType=REAL}, 
+      #{state,jdbcType=TINYINT}, #{creattime,jdbcType=TIMESTAMP}, #{closetime,jdbcType=TIMESTAMP}, 
+      #{printtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ddlottery.model.DDorder" >
+    insert into dd_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        oid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="lot != null" >
+        lot,
+      </if>
+      <if test="play != null" >
+        play,
+      </if>
+      <if test="str != null" >
+        str,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="multiple != null" >
+        multiple,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="isprint != null" >
+        isprint,
+      </if>
+      <if test="iswin != null" >
+        iswin,
+      </if>
+      <if test="bonus != null" >
+        bonus,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtime != null" >
+        printtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oid != null" >
+        #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="lot != null" >
+        #{lot,jdbcType=INTEGER},
+      </if>
+      <if test="play != null" >
+        #{play,jdbcType=INTEGER},
+      </if>
+      <if test="str != null" >
+        #{str,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="multiple != null" >
+        #{multiple,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=REAL},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="isprint != null" >
+        #{isprint,jdbcType=TINYINT},
+      </if>
+      <if test="iswin != null" >
+        #{iswin,jdbcType=TINYINT},
+      </if>
+      <if test="bonus != null" >
+        #{bonus,jdbcType=REAL},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closetime != null" >
+        #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printtime != null" >
+        #{printtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddlottery.model.DDorder" >
+    update dd_order
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="lot != null" >
+        lot = #{lot,jdbcType=INTEGER},
+      </if>
+      <if test="play != null" >
+        play = #{play,jdbcType=INTEGER},
+      </if>
+      <if test="str != null" >
+        str = #{str,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="multiple != null" >
+        multiple = #{multiple,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=REAL},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="isprint != null" >
+        isprint = #{isprint,jdbcType=TINYINT},
+      </if>
+      <if test="iswin != null" >
+        iswin = #{iswin,jdbcType=TINYINT},
+      </if>
+      <if test="bonus != null" >
+        bonus = #{bonus,jdbcType=REAL},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printtime != null" >
+        printtime = #{printtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where oid = #{oid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDorder" >
+    update dd_order
+    set uid = #{uid,jdbcType=INTEGER},
+      bid = #{bid,jdbcType=INTEGER},
+      lot = #{lot,jdbcType=INTEGER},
+      play = #{play,jdbcType=INTEGER},
+      str = #{str,jdbcType=VARCHAR},
+      num = #{num,jdbcType=INTEGER},
+      multiple = #{multiple,jdbcType=INTEGER},
+      money = #{money,jdbcType=REAL},
+      content = #{content,jdbcType=VARCHAR},
+      isprint = #{isprint,jdbcType=TINYINT},
+      iswin = #{iswin,jdbcType=TINYINT},
+      bonus = #{bonus,jdbcType=REAL},
+      state = #{state,jdbcType=TINYINT},
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      closetime = #{closetime,jdbcType=TIMESTAMP},
+      printtime = #{printtime,jdbcType=TIMESTAMP}
+    where oid = #{oid,jdbcType=INTEGER}
+  </update>
+</mapper>
