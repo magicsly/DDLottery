@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddlottery.dao.DDuserMapper" >
+  <resultMap id="BaseResultMap" type="com.ddlottery.model.DDuser" >
+    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="CHAR" />
+    <result column="pwd" property="pwd" jdbcType="CHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="bigimg" property="bigimg" jdbcType="CHAR" />
+    <result column="smallimg" property="smallimg" jdbcType="CHAR" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="jointime" property="jointime" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uid, mobile, pwd, nickname, bigimg, smallimg, creattime, jointime, ip
+  </sql>
+    <select id="isuser" resultType="int" parameterType="java.lang.String">
+        SELECT COUNT(0) FROM dd_user where mobile=#{mobile,jdbcType=CHAR}
+    </select>
+    <select id="userlogin" resultMap="BaseResultMap" parameterType="com.ddlottery.model.DDuser" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_user
+        where mobile = #{mobile,jdbcType=CHAR} AND pwd = #{pwd,jdbcType=CHAR}
+    </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_user
+    where uid = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ddlottery.model.DDuser" >
+    insert into dd_user (uid, mobile, pwd, nickname, 
+      bigimg, smallimg, creattime, 
+      jointime, ip)
+    values (#{uid,jdbcType=INTEGER}, #{mobile,jdbcType=CHAR}, #{pwd,jdbcType=CHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{bigimg,jdbcType=CHAR}, #{smallimg,jdbcType=CHAR}, #{creattime,jdbcType=TIMESTAMP}, 
+      #{jointime,jdbcType=TIMESTAMP}, #{ip,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ddlottery.model.DDuser" >
+    insert into dd_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="pwd != null" >
+        pwd,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="bigimg != null" >
+        bigimg,
+      </if>
+      <if test="smallimg != null" >
+        smallimg,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="jointime != null" >
+        jointime,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=CHAR},
+      </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=CHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="bigimg != null" >
+        #{bigimg,jdbcType=CHAR},
+      </if>
+      <if test="smallimg != null" >
+        #{smallimg,jdbcType=CHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jointime != null" >
+        #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddlottery.model.DDuser" >
+    update dd_user
+    <set >
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=CHAR},
+      </if>
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=CHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="bigimg != null" >
+        bigimg = #{bigimg,jdbcType=CHAR},
+      </if>
+      <if test="smallimg != null" >
+        smallimg = #{smallimg,jdbcType=CHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jointime != null" >
+        jointime = #{jointime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=CHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDuser" >
+    update dd_user
+    set mobile = #{mobile,jdbcType=CHAR},
+      pwd = #{pwd,jdbcType=CHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      bigimg = #{bigimg,jdbcType=CHAR},
+      smallimg = #{smallimg,jdbcType=CHAR},
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      jointime = #{jointime,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=CHAR}
+    where uid = #{uid,jdbcType=INTEGER}
+  </update>
+</mapper>

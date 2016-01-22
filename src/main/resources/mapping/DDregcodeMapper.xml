@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddlottery.dao.DDregcodeMapper" >
+  <resultMap id="BaseResultMap" type="com.ddlottery.model.DDregcode" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="CHAR" />
+    <result column="code" property="code" jdbcType="CHAR" />
+    <result column="ip" property="ip" jdbcType="CHAR" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="isuse" property="isuse" jdbcType="TINYINT" />
+    <result column="usetime" property="usetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mobile, code, ip, creattime, closetime, isuse, usetime
+  </sql>
+    <update id="updateCode" parameterType="com.ddlottery.model.DDregcode" >
+        UPDATE dd_regcode SET isuse = 1 ,usetime = #{usetime,jdbcType=TIMESTAMP}
+        WHERE code = #{code,jdbcType=CHAR}
+        AND mobile = #{mobile,jdbcType=CHAR}
+        AND isuse = 0
+    </update>
+    <select id="selectcode" resultType="java.lang.Integer" parameterType="com.ddlottery.model.DDregcode" >
+        SELECT COUNT(*) FROM  dd_regcode WHERE
+        code = #{code,jdbcType=CHAR}
+        AND mobile = #{mobile,jdbcType=CHAR}
+        AND isuse = 0
+        AND closetime > #{closetime,jdbcType=TIMESTAMP}
+    </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_regcode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_regcode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ddlottery.model.DDregcode" >
+    insert into dd_regcode (id, mobile, code, ip, 
+      creattime, closetime, isuse, 
+      usetime)
+    values (#{id,jdbcType=INTEGER}, #{mobile,jdbcType=CHAR}, #{code,jdbcType=CHAR}, #{ip,jdbcType=CHAR}, 
+      #{creattime,jdbcType=TIMESTAMP}, #{closetime,jdbcType=TIMESTAMP}, #{isuse,jdbcType=TINYINT}, 
+      #{usetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ddlottery.model.DDregcode" >
+    insert into dd_regcode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="isuse != null" >
+        isuse,
+      </if>
+      <if test="usetime != null" >
+        usetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=CHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=CHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=CHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closetime != null" >
+        #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isuse != null" >
+        #{isuse,jdbcType=TINYINT},
+      </if>
+      <if test="usetime != null" >
+        #{usetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddlottery.model.DDregcode" >
+    update dd_regcode
+    <set >
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=CHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=CHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=CHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isuse != null" >
+        isuse = #{isuse,jdbcType=TINYINT},
+      </if>
+      <if test="usetime != null" >
+        usetime = #{usetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDregcode" >
+    update dd_regcode
+    set mobile = #{mobile,jdbcType=CHAR},
+      code = #{code,jdbcType=CHAR},
+      ip = #{ip,jdbcType=CHAR},
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      closetime = #{closetime,jdbcType=TIMESTAMP},
+      isuse = #{isuse,jdbcType=TINYINT},
+      usetime = #{usetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
