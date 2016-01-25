@@ -31,6 +31,12 @@
     bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime, 
     logintime, ip, state
   </sql>
+
+    <select id="selectBusiness" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from dd_business
+    </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

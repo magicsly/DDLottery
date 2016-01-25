@@ -129,5 +129,20 @@ public class DDuserService {
         }
     }
 
+    public Integer iscode(String mobile,String code){
+        DDregcode regcode = new DDregcode();
+        regcode.setMobile(mobile);
+        regcode.setCode(code);
+        regcode.setClosetime(new Date());
+        Integer isreg = DDregcodeMapper.selectcode(regcode);
+        if(isreg == 0){
+            return 9001;//验证码错误
+        }else{
+            regcode.setUsetime(new Date());
+            DDregcodeMapper.updateCode(regcode);
+            return 0;
+        }
+    }
+
 }
 

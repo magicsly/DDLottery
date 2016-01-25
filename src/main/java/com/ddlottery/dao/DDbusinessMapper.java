@@ -1,6 +1,9 @@
 package com.ddlottery.dao;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ddlottery.model.DDbusiness;
+
+import java.util.ArrayList;
 
 public interface DDbusinessMapper {
     int deleteByPrimaryKey(Integer bid);
@@ -14,4 +17,7 @@ public interface DDbusinessMapper {
     int updateByPrimaryKeySelective(DDbusiness record);
 
     int updateByPrimaryKey(DDbusiness record);
+
+    ArrayList<DDbusiness> selectBusiness(PageBounds pageBounds);
+
 }

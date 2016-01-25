@@ -20,6 +20,7 @@ public class DDorderService {
 
     public Integer addorder(DDorder order){
         order.setCreattime(new Date());
+        order.setState((byte)0);
         DDorderMapper.insertSelective(order);
         return 0;
     }

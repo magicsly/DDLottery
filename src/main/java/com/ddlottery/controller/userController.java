@@ -104,4 +104,19 @@ public class userController {
         return map;
     }
 
+    @RequestMapping(value = "/iscode")
+    @ResponseBody
+    public Map iscode(@RequestParam(value="mobile",defaultValue = "",required=false) String mobile,
+                      @RequestParam(value="code",defaultValue = "",required=false) String regcode
+    ) {
+        Integer code = DDuserService.iscode(mobile, regcode);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        if(code==0){
+            map.put("msg", "验证码正确");
+        }else {
+            map.put("msg", "验证码错误");
+        }
+        return map;
+    }
 }
