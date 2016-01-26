@@ -10,11 +10,11 @@
     <typeAliases>
 
     </typeAliases>
-    <!--<plugins>-->
-        <!--<plugin interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">-->
-            <!--<property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.SQLServer2005Dialect"/>-->
-        <!--</plugin>-->
-    <!--</plugins>-->
+    <plugins>
+        <plugin interceptor="com.github.miemiedev.mybatis.paginator.OffsetLimitInterceptor">
+            <property name="dialectClass" value="com.github.miemiedev.mybatis.paginator.dialect.MySQLDialect"/>
+        </plugin>
+    </plugins>
     <!--配置文件-->
     <!--<mappers>-->
         <!--<mapper resource="mapping/share_userMapper.xml"/>-->

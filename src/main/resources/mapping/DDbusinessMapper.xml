@@ -3,6 +3,7 @@
 <mapper namespace="com.ddlottery.dao.DDbusinessMapper" >
   <resultMap id="BaseResultMap" type="com.ddlottery.model.DDbusiness" >
     <id column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="pwd" property="pwd" jdbcType="CHAR" />
     <result column="locname" property="locname" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="cox" property="cox" jdbcType="REAL" />
@@ -27,14 +28,22 @@
     <result column="state" property="state" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    bid, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname, 
+    bid, pwd, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname, 
     bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime, 
     logintime, ip, state
   </sql>
-
-    <select id="selectBusiness" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List" />
+  <select id="selectBusiness" resultMap="BaseResultMap">
+        select
+        bid, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
+        bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime,
+        logintime, ip, state
         from dd_business
+    </select>
+    <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_business
+        where mobile = #{bid,jdbcType=VARCHAR}
     </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -48,28 +57,31 @@
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ddlottery.model.DDbusiness" >
-    insert into dd_business (bid, locname, address, 
-      cox, coy, bname, realname, 
-      idcard, mobile, bank, bankname, 
-      bankcode, saletime, type, 
-      cardimg, saleimg, businessimg, 
-      salecard, money, creattime, 
-      logintime, ip, state
-      )
-    values (#{bid,jdbcType=INTEGER}, #{locname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{cox,jdbcType=REAL}, #{coy,jdbcType=REAL}, #{bname,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
-      #{idcard,jdbcType=CHAR}, #{mobile,jdbcType=CHAR}, #{bank,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, 
-      #{bankcode,jdbcType=VARCHAR}, #{saletime,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
-      #{cardimg,jdbcType=CHAR}, #{saleimg,jdbcType=CHAR}, #{businessimg,jdbcType=CHAR}, 
-      #{salecard,jdbcType=CHAR}, #{money,jdbcType=REAL}, #{creattime,jdbcType=TIMESTAMP}, 
-      #{logintime,jdbcType=TIMESTAMP}, #{ip,jdbcType=CHAR}, #{state,jdbcType=TINYINT}
-      )
+    insert into dd_business (bid, pwd, locname, 
+      address, cox, coy, bname, 
+      realname, idcard, mobile, 
+      bank, bankname, bankcode, 
+      saletime, type, cardimg, 
+      saleimg, businessimg, salecard, 
+      money, creattime, logintime, 
+      ip, state)
+    values (#{bid,jdbcType=INTEGER}, #{pwd,jdbcType=CHAR}, #{locname,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{cox,jdbcType=REAL}, #{coy,jdbcType=REAL}, #{bname,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=CHAR}, #{mobile,jdbcType=CHAR}, 
+      #{bank,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
+      #{saletime,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{cardimg,jdbcType=CHAR}, 
+      #{saleimg,jdbcType=CHAR}, #{businessimg,jdbcType=CHAR}, #{salecard,jdbcType=CHAR}, 
+      #{money,jdbcType=REAL}, #{creattime,jdbcType=TIMESTAMP}, #{logintime,jdbcType=TIMESTAMP}, 
+      #{ip,jdbcType=CHAR}, #{state,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.ddlottery.model.DDbusiness" >
     insert into dd_business
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="bid != null" >
         bid,
+      </if>
+      <if test="pwd != null" >
+        pwd,
       </if>
       <if test="locname != null" >
         locname,
@@ -142,6 +154,9 @@
       <if test="bid != null" >
         #{bid,jdbcType=INTEGER},
       </if>
+      <if test="pwd != null" >
+        #{pwd,jdbcType=CHAR},
+      </if>
       <if test="locname != null" >
         #{locname,jdbcType=VARCHAR},
       </if>
@@ -213,6 +228,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ddlottery.model.DDbusiness" >
     update dd_business
     <set >
+      <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=CHAR},
+      </if>
       <if test="locname != null" >
         locname = #{locname,jdbcType=VARCHAR},
       </if>
@@ -284,7 +302,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDbusiness" >
     update dd_business
-    set locname = #{locname,jdbcType=VARCHAR},
+    set pwd = #{pwd,jdbcType=CHAR},
+      locname = #{locname,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       cox = #{cox,jdbcType=REAL},
       coy = #{coy,jdbcType=REAL},

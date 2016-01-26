@@ -24,6 +24,23 @@
     oid, uid, bid, lot, play, str, num, multiple, money, content, isprint, iswin, bonus, 
     state, creattime, closetime, printtime
   </sql>
+
+    <select id="selectByOther" resultMap="BaseResultMap" parameterType="com.ddlottery.model.DDorder" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_order
+        where 1=1
+        <if test="bid != null" >
+            AND bid =  #{bid,jdbcType=INTEGER}
+        </if>
+        <if test="state != null" >
+            AND state =  #{state,jdbcType=INTEGER}
+        </if>
+        <if test="closetime != null" >
+            AND closetime >  #{closetime,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

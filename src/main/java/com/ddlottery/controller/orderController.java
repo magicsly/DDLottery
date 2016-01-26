@@ -24,6 +24,21 @@ public class orderController {
     @Autowired
     DDorderService DDorderService;
 
+    /**
+     * 添加订单
+     * @param uid 用户id
+     * @param bid 商户id
+     * @param lot 彩种id
+     * @param play 玩法id
+     * @param num 注数
+     * @param multiple 倍数
+     * @param money 金额
+     * @param str 投注串
+     * @param content 备注
+     * @param closetime 截止时间
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping(value = "/addorder")
     @ResponseBody
     public Map addorder(@RequestParam(value="uid",defaultValue = "",required=false) Integer uid,
@@ -55,4 +70,6 @@ public class orderController {
         map.put("code",code);
         return map;
     }
+
+
 }

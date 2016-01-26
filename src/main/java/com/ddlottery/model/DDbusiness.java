@@ -5,6 +5,8 @@ import java.util.Date;
 public class DDbusiness {
     private Integer bid;
 
+    private String pwd;
+
     private String locname;
 
     private String address;
@@ -55,6 +57,14 @@ public class DDbusiness {
 
     public void setBid(Integer bid) {
         this.bid = bid;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd == null ? null : pwd.trim();
     }
 
     public String getLocname() {

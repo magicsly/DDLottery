@@ -14,6 +14,8 @@ public interface DDbusinessMapper {
 
     DDbusiness selectByPrimaryKey(Integer bid);
 
+    DDbusiness selectByMobile(String mobile);
+
     int updateByPrimaryKeySelective(DDbusiness record);
 
     int updateByPrimaryKey(DDbusiness record);
