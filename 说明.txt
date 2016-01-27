@@ -9,3 +9,28 @@
 5、已开奖（二期）
 6、未中奖（二期）
 7、已中奖（二期）
+
+
+一、接口:商户登录
+参数：
+1、 mobile=手机号码
+2、 key=验证码 md5(手机号+md5(密码)+123456)
+http://api.51bocai.com/DDLottery/machlogin?mobile=13764204478&key=5e55481012beabdee7f13380da672a25
+错误 返回 -1 验证码错误
+正确 返回 商户id
+
+二、接口:获取商户出票
+参数：
+1、 mobile=手机号码
+2、 key=验证码 md5(bid+123456)
+http://api.51bocai.com/DDLottery/machorder?bid=2&key=9a440f1f071dad3043b6c8ba93bb761c
+错误 返回 -1 验证码错误
+正确 返回 列表
+
+三、接口:出票成功接口
+参数
+1、 oid=订单号
+2、key验证码 md5(oid+123456)
+http://api.51bocai.com/DDLottery/orderprint?oid=1&key=9a440f1f071dad3043b6c8ba93bb761c
+错误 返回 -1 验证码错误
+正确 返回 列表
