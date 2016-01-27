@@ -23,9 +23,13 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
+          <element id="library" level="project" name="Maven: javax.servlet.jsp:jsp-api:2.1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.1.RELEASE" />
+          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:3.0.1" />
+          <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.11" />
           <element id="library" level="project" name="Maven: com.jcabi:jcabi-xml:0.16.2" />
           <element id="library" level="project" name="Maven: com.jcabi:jcabi-aspects:0.20.1" />

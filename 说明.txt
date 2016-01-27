@@ -21,7 +21,7 @@ http://api.51bocai.com/DDLottery/machlogin?mobile=13764204478&key=5e55481012beab
 
 二、接口:获取商户出票
 参数：
-1、 mobile=手机号码
+1、 bid=商户id
 2、 key=验证码 md5(bid+123456)
 http://api.51bocai.com/DDLottery/machorder?bid=2&key=9a440f1f071dad3043b6c8ba93bb761c
 错误 返回 -1 验证码错误

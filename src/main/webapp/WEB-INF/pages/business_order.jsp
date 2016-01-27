@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String bid = request.getQueryString().replace("bid=","");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,18 +29,21 @@
                 </ol>
             </div>
         </div><!-- /.row -->
-
+        <div class="alert alert-success alert-dismissable">
+            商户手机号:<%=bid%><br>
+            通信md5: ${md5}
+        </div>
         <div class="row">
             <div class="col-lg-6">
-                <button type="button" class="btn btn-primary" onclick="location='order_add.jsp'">添加商户</button>
                 <div class="table-responsive">
                     <table class="table table-hover tablesorter">
                         <thead>
                         <tr>
                             <th>id</th>
-                            <th>商户名</th>
-                            <th>手机号</th>
-                            <th>操作</th>
+                            <th>用户id</th>
+                            <th>金额</th>
+                            <th>出票截止时间</th>
+                            <th>状态</th>
                         </tr>
                         </thead>
                         <tbody id="data">
@@ -45,15 +51,6 @@
                         </tbody>
                     </table>
                 </div>
-                <ul class="pagination pagination-sm">
-                    <li class="disabled"><a href="#">&laquo;</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">&raquo;</a></li>
-                </ul>
             </div>
         </div><!-- /.row -->
     </div><!-- /#page-wrapper -->
@@ -67,8 +64,36 @@
 <script src="js/tablesorter/tables.js"></script>
 <script>
     $(function() {
+        var bid = GetQueryString("bid");
+        $.ajax({
+            type: "POST",
+            url: "machorder?bid="+bid+"&key=cym",
+            data:{},
+            success: function(data){
 
+                    var h = []
+                    for(var i=0;i<data.list.length;i++){
+                        h[h.length] = "<tr>";
+                        h[h.length] = "<td>"+data.list[i].oid+"</td>";
+                        h[h.length] = "<td>"+data.list[i].uid+"</td>";
+                        h[h.length] = "<td>"+data.list[i].money+"</td>";
+                        h[h.length] = "<td>"+data.list[i].closetime+"</td>";
+                        h[h.length] = "<td>"+data.list[i].state+"</td>";
+                        h[h.length] = "</tr>";
+                    }
+                    $("#data").html(h.join(""));
+            },
+            error: function(){
+                alert("出错");
+            }
+        });
     });
+    function GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
 </script>
 </body>
 </html>

@@ -71,5 +71,26 @@ public class orderController {
         return map;
     }
 
+    @RequestMapping(value = "/machorder")
+    @ResponseBody
+    public Map machorder(@RequestParam(value="bid",defaultValue = "",required=false) Integer bid,
+                         @RequestParam(value="key",defaultValue = "",required=false) String key
+    ) throws Exception {
+        Map<String,Object> map = DDorderService.machineGetOrder(bid,key);
+        return map;
+
+    }
+
+    @RequestMapping(value = "/orderprint")
+    @ResponseBody
+    public Map orderprint(@RequestParam(value="oid",defaultValue = "",required=false) Integer oid,
+                         @RequestParam(value="key",defaultValue = "",required=false) String key
+    ) throws Exception {
+        Integer code = DDorderService.machinePrintOrder(oid,key);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        return map;
+    }
+
 
 }

@@ -121,6 +121,8 @@ public class DDuserService {
         try {
             Integer code = confUser(user,1);
             if(code == 0){
+                String md5pw =DigestUtils.md5Hex(user.getPwd());
+                user.setPwd(md5pw);
                 DDuserMapper.updateByPrimaryKeySelective(user);
             }
             return code;

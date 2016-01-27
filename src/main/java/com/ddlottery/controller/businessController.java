@@ -2,11 +2,13 @@ package com.ddlottery.controller;
 
 import com.ddlottery.model.DDbusiness;
 import com.ddlottery.service.DDbusinessService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -82,5 +84,20 @@ public class businessController {
         Map<String,Object> map = DDbusinessService.business_list(page);
         return map;
     }
+
+    @RequestMapping("business_order")
+    public ModelAndView md5(String bid,ModelAndView modelAndView){
+        String codes = DigestUtils.md5Hex(bid + DDbusinessService.md5key);
+        modelAndView.addObject("md5", codes);
+        return modelAndView;
+    }
+
+    @RequestMapping("test")
+    public ModelAndView test(String mobile,ModelAndView modelAndView){
+        System.out.println(mobile);
+        modelAndView.addObject("mobile",mobile);
+        return modelAndView;
+    }
+
 
 }

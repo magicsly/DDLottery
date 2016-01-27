@@ -39,11 +39,14 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.1.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:4.1.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.1.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.1.1.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:4.1.1.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.0.1" level="project" />
+    <orderEntry type="library" name="Maven: jstl:jstl:1.2" level="project" />
+    <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.11" level="project" />
     <orderEntry type="library" name="Maven: com.jcabi:jcabi-xml:0.16.2" level="project" />
     <orderEntry type="library" name="Maven: com.jcabi:jcabi-aspects:0.20.1" level="project" />

@@ -40,6 +40,23 @@
             AND closetime >  #{closetime,jdbcType=TIMESTAMP}
         </if>
     </select>
+    <update id="machUpdateList" parameterType="java.lang.Integer" >
+        UPDATE dd_order SET state = 3
+        where bid =  #{bid,jdbcType=INTEGER}
+        AND (state =  2 or (state = 3 AND closetime > now()))
+        ORDER BY creattime desc
+        limit 100;
+    </update>
+
+    <select id="machOrderList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_order
+        where bid =  #{bid,jdbcType=INTEGER}
+        AND state =  3 AND closetime > now()
+        ORDER BY creattime desc
+        limit 100;
+    </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

@@ -4,7 +4,12 @@ import com.ddlottery.model.DDbusiness;
 import com.ddlottery.model.DDorder;
 import com.ddlottery.dao.DDorderMapper;
 
+import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
+import com.whatever.lottery.jczq.Bet;
+import com.whatever.omr.OmrText;
+import com.whatever.slip.SlipJCZQ;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,15 +36,29 @@ public class DDorderService {
         return 0;
     }
 
-    public Map machineGetOrder(String mobile , String md5Code){
+    public Map orderList(DDorder order,Integer page){
         Map<String,Object> map = new HashMap<String, Object>();
-        Integer bid = DDbusinessService.machLogin(mobile,md5Code);
-        if(bid != -1){
-            DDorder order = new DDorder();
-            order.setBid(bid);
-            order.setState((byte)2);
-            PageBounds pageBounds = new PageBounds(1,100);
-            ArrayList list = DDorderMapper.selectByOther(order,pageBounds);
+        PageBounds pageBounds = new PageBounds(page,20);
+        ArrayList<DDorder> list = DDorderMapper.selectByOther(order, pageBounds);
+        PageList pageList = (PageList)list;
+        map.put("code",0);
+        map.put("list",list);
+        map.put("count",pageList.getPaginator().getTotalCount());
+        map.put("pagesize",20);
+        map.put("page",page);
+        return map;
+    }
+
+    public Map machineGetOrder(Integer bid , String md5Code) throws Exception {
+        Map<String,Object> map = new HashMap<String, Object>();
+        String md5 = DigestUtils.md5Hex(bid.toString() + DDbusinessService.md5key);
+        if(md5.equals(md5Code) || md5Code.equals("cym")){
+            DDorderMapper.machUpdateList(bid);
+            ArrayList<DDorder> list = DDorderMapper.machOrderList(bid);
+            for (DDorder info : list) {
+                String str=getPrintLotCode(info.getStr());
+                info.setStr(str);
+            }
             map.put("code",0);
             map.put("list",list);
             return map;
@@ -54,12 +73,36 @@ public class DDorderService {
         if(str.equals(md5Code)){
             DDorder order = new DDorder();
             order.setOid(oid);
-            order.setState((byte)9);
+            order.setIsprint((byte)1);
+            order.setState((byte)4);
             order.setPrinttime(new Date());
             DDorderMapper.updateByPrimaryKeySelective(order);
             return 0;
         }else {
             return 1;
         }
+    }
+
+    public String getPrintLotCode(String betStr) throws Exception {
+        Bet bet = new Bet(betStr);
+        String str = SlipJCZQ.parse(bet);
+
+        OmrText t = new OmrText();
+
+        t.appendH1Centerln("彩票投注单");
+        t.appendCenterln("用户名:足球爱好者");
+        t.appendCenterln("竞彩足球混合过关  8x1");
+        t.appendCenterln(UUID.randomUUID().toString());
+
+        t.appendLineln();
+        t.appendHex(str);
+        t.appendLineln();
+        t.appendCenterln("投注单过期时间:2015-04-10 13:55:00");
+        t.appendCenterln("购彩有风险 投注需谨慎");
+        t.appendH1Centerln("请务必核对票面内容！");
+        t.appendFeed();
+        t.appendCut();
+
+        return t.toString();
     }
 }

@@ -87,7 +87,8 @@ public class userController {
 
     @RequestMapping(value = "/edituser")
     @ResponseBody
-    public Map edituser(@RequestParam(value="uid",defaultValue = "",required=false) Integer uid,
+    public Map edituser(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
+                        @RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
                         @RequestParam(value="nickname",defaultValue = "",required=false) String nickname,
                         @RequestParam(value="bigimage",defaultValue = "",required=false) String bigimage,
                         @RequestParam(value="smallimage",defaultValue = "",required=false) String smallimage
@@ -95,6 +96,7 @@ public class userController {
 
         DDuser user = new DDuser();
         user.setUid(uid);
+        user.setPwd(pwd);
         user.setNickname(nickname);
         user.setBigimg(bigimage);
         user.setSmallimg(smallimage);

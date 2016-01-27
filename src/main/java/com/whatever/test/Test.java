@@ -121,8 +121,6 @@ public class Test {
 		//Bet bet = new Bet("1|SPF|151226001=3,151226002=1|2*1");
 		
 		String str = SlipJCZQ.parse(bet);
-		
-		
 		OmrText t = new OmrText();
 		
 		t.appendH1Centerln("彩票投注单");

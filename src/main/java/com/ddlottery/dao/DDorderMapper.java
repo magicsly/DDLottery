@@ -19,4 +19,8 @@ public interface DDorderMapper {
     int updateByPrimaryKey(DDorder record);
 
     ArrayList<DDorder> selectByOther(DDorder record,PageBounds pageBounds);
+
+    int machUpdateList(Integer bid);
+
+    ArrayList<DDorder> machOrderList(Integer bid);
 }

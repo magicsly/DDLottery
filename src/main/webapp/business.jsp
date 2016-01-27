@@ -15,7 +15,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <%@ include file="top.jsp"%>
+    <%@ include file="WEB-INF/pages/top.jsp"%>
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
@@ -69,7 +69,7 @@
     $(function() {
         $.ajax({
             type: "POST",
-            url: "/businessList?page=1",
+            url: "businessList?page=1",
             data:{},
             success: function(data){
                 var count = data.count;
@@ -81,7 +81,7 @@
                         h[h.length] = "<td>"+data.list[i].bid+"</td>";
                         h[h.length] = "<td>"+data.list[i].locname+"</td>";
                         h[h.length] = "<td>"+data.list[i].mobile+"</td>";
-                        h[h.length] = "<td></td>";
+                        h[h.length] = "<td><a href='business_order?bid="+data.list[i].bid+"'>订单</a></td>";
                         h[h.length] = "</tr>";
                     }
                     $("#data").html(h.join(""));

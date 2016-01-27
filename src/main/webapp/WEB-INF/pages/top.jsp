@@ -15,7 +15,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-            <li><a href="business.jsp" class="active"><i class="fa fa-dashboard"></i> 商户管理</a></li>
+            <li><a href="../../business.jsp" class="active"><i class="fa fa-dashboard"></i> 商户管理</a></li>
             <li><a href="order.jsp" class="active"><i class="fa fa-dashboard"></i> 订单管理</a></li>
         </ul>
 
