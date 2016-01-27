@@ -32,5 +32,5 @@ http://api.51bocai.com/DDLottery/machorder?bid=2&key=9a440f1f071dad3043b6c8ba93b
 1、 oid=订单号
 2、key验证码 md5(oid+123456)
 http://api.51bocai.com/DDLottery/orderprint?oid=1&key=9a440f1f071dad3043b6c8ba93bb761c
-错误 返回 -1 验证码错误
-正确 返回 列表
+错误 返回 1 验证码错误
+正确 返回 0
