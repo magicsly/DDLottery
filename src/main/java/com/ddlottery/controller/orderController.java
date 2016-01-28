@@ -4,6 +4,7 @@ import com.ddlottery.model.DDorder;
 import com.ddlottery.service.DDorderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +42,7 @@ public class orderController {
      */
     @RequestMapping(value = "/addorder")
     @ResponseBody
-    public Map addorder(@RequestParam(value="uid",defaultValue = "",required=false) Integer uid,
+    public Map addorder(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
                         @RequestParam(value="bid",defaultValue = "",required=false) Integer bid,
                         @RequestParam(value="lot",defaultValue = "",required=false) Integer lot,
                         @RequestParam(value="play",defaultValue = "",required=false) Integer play,

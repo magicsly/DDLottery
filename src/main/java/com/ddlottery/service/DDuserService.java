@@ -117,6 +117,13 @@ public class DDuserService {
         }
     }
 
+    public Integer editPwd(DDuser user){
+        String md5pw =DigestUtils.md5Hex(user.getPwd());
+        user.setPwd(md5pw);
+        DDuserMapper.editPwd(user);
+        return 0;
+    }
+
     public Integer editUser(DDuser user){
         try {
             Integer code = confUser(user,1);

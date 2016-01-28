@@ -15,6 +15,14 @@
   <sql id="Base_Column_List" >
     uid, mobile, pwd, nickname, bigimg, smallimg, creattime, jointime, ip
   </sql>
+
+    <update id="editPwd" parameterType="com.ddlottery.model.DDuser" >
+        update dd_user
+        set
+        pwd = #{pwd,jdbcType=CHAR},
+        where mobile = #{mobile,jdbcType=CHAR}
+    </update>
+
     <select id="isuser" resultType="int" parameterType="java.lang.String">
         SELECT COUNT(0) FROM dd_user where mobile=#{mobile,jdbcType=CHAR}
     </select>

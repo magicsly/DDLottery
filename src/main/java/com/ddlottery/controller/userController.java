@@ -106,6 +106,21 @@ public class userController {
         return map;
     }
 
+    @RequestMapping(value = "/editpw")
+    @ResponseBody
+    public Map editpw(@RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
+                      @RequestParam(value="mobile",defaultValue = "",required=false) String mobile
+    ) {
+
+        DDuser user = new DDuser();
+        user.setPwd(pwd);
+        user.setMobile(mobile);
+        Integer code = DDuserService.editPwd(user);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        return map;
+    }
+
     @RequestMapping(value = "/iscode")
     @ResponseBody
     public Map iscode(@RequestParam(value="mobile",defaultValue = "",required=false) String mobile,
