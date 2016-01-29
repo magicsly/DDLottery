@@ -14,4 +14,5 @@ public class tools {
         String url = "http://user.cpdyj.com/user/insertSMS.go?type=printorder&mobile="+mobile+"&code="+msg;
         Document doc = Jsoup.connect(url).get();
     }
+
 }

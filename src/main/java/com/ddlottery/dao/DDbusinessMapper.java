@@ -4,6 +4,7 @@ import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.ddlottery.model.DDbusiness;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface DDbusinessMapper {
     int deleteByPrimaryKey(Integer bid);
@@ -21,5 +22,7 @@ public interface DDbusinessMapper {
     int updateByPrimaryKey(DDbusiness record);
 
     ArrayList<DDbusiness> selectBusiness(PageBounds pageBounds);
+
+    ArrayList<Map> nearBusiness(DDbusiness record,PageBounds pageBounds);
 
 }

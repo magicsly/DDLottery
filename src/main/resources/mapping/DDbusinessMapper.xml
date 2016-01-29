@@ -5,6 +5,7 @@
     <id column="bid" property="bid" jdbcType="INTEGER" />
     <result column="pwd" property="pwd" jdbcType="CHAR" />
     <result column="locname" property="locname" jdbcType="VARCHAR" />
+    <result column="bimage" property="bimage" jdbcType="VARCHAR" />
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="cox" property="cox" jdbcType="REAL" />
     <result column="coy" property="coy" jdbcType="REAL" />
@@ -28,13 +29,22 @@
     <result column="state" property="state" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    bid, pwd, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname, 
+    bid, pwd, bimage,locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
     bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime, 
     logintime, ip, state
   </sql>
+    <select id="nearBusiness" resultType="java.util.HashMap">
+        select
+        bid, bimage, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
+        bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime,
+        logintime, ip, state,
+        (POWER(MOD(ABS(cox-#{cox,jdbcType=REAL}),360),2) + POWER(ABS(coy-#{coy,jdbcType=REAL}),2)) AS distance
+        from dd_business
+        order by distance
+    </select>
   <select id="selectBusiness" resultMap="BaseResultMap">
         select
-        bid, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
+        bid, bimage, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
         bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime,
         logintime, ip, state
         from dd_business
@@ -57,7 +67,7 @@
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ddlottery.model.DDbusiness" >
-    insert into dd_business (bid, pwd, locname, 
+    insert into dd_business (bid, pwd, bimage, locname,
       address, cox, coy, bname, 
       realname, idcard, mobile, 
       bank, bankname, bankcode, 
@@ -65,7 +75,7 @@
       saleimg, businessimg, salecard, 
       money, creattime, logintime, 
       ip, state)
-    values (#{bid,jdbcType=INTEGER}, #{pwd,jdbcType=CHAR}, #{locname,jdbcType=VARCHAR}, 
+    values (#{bid,jdbcType=INTEGER}, #{pwd,jdbcType=CHAR}, #{bimage,jdbcType=VARCHAR}, #{locname,jdbcType=VARCHAR},
       #{address,jdbcType=VARCHAR}, #{cox,jdbcType=REAL}, #{coy,jdbcType=REAL}, #{bname,jdbcType=VARCHAR}, 
       #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=CHAR}, #{mobile,jdbcType=CHAR}, 
       #{bank,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
@@ -83,6 +93,9 @@
       <if test="pwd != null" >
         pwd,
       </if>
+        <if test="bimage != null" >
+            bimage,
+        </if>
       <if test="locname != null" >
         locname,
       </if>
@@ -157,6 +170,9 @@
       <if test="pwd != null" >
         #{pwd,jdbcType=CHAR},
       </if>
+        <if test="bimage != null" >
+            #{bimage,jdbcType=CHAR},
+        </if>
       <if test="locname != null" >
         #{locname,jdbcType=VARCHAR},
       </if>
@@ -231,6 +247,9 @@
       <if test="pwd != null" >
         pwd = #{pwd,jdbcType=CHAR},
       </if>
+        <if test="bimage != null" >
+            bimage = #{bimage,jdbcType=VARCHAR},
+        </if>
       <if test="locname != null" >
         locname = #{locname,jdbcType=VARCHAR},
       </if>
@@ -303,6 +322,7 @@
   <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDbusiness" >
     update dd_business
     set pwd = #{pwd,jdbcType=CHAR},
+     bimage = #{bimage,jdbcType=VARCHAR},
       locname = #{locname,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       cox = #{cox,jdbcType=REAL},

@@ -32,6 +32,7 @@ public class businessController {
     @ResponseBody
     public Map addbusiness(@RequestParam(value="locname",defaultValue = "",required=false) String locname,
                            @RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
+                           @RequestParam(value="bimage",defaultValue = "",required=false) String bimage,
                            @RequestParam(value="address",defaultValue = "",required=false) String address,
                            @RequestParam(value="cox",defaultValue = "0",required=false) Float cox,
                            @RequestParam(value="coy",defaultValue = "0",required=false) Float coy,
@@ -74,6 +75,17 @@ public class businessController {
         Integer code = DDbusinessService.machLogin(mobile,key);
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("code",code);
+        return map;
+    }
+
+    @RequestMapping(value = "/nearbusiness")
+    @ResponseBody
+    public Map nearbusiness(@RequestParam(value="cox",defaultValue = "0",required=false) Float cox,
+                            @RequestParam(value="coy",defaultValue = "0",required=false) Float coy,
+                            @RequestParam(value="page",defaultValue = "1",required=false) Integer page
+    ){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map = DDbusinessService.nearBusiness(cox,coy,page);
         return map;
     }
 

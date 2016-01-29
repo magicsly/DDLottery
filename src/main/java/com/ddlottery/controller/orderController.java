@@ -1,5 +1,7 @@
 package com.ddlottery.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ddlottery.model.DDorder;
 import com.ddlottery.service.DDorderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,43 @@ public class orderController {
         return map;
     }
 
+    @RequestMapping(value = "/orderinfo")
+    @ResponseBody
+    public JSONObject orderinfo() {
+        String str = "{\n" +
+                "\"username\":\"少保罗成\",\n" +
+                "\"lottype\":\"01\",\n" +
+                "\"issue\":\"20160129\",\n" +
+                "\"proid\":\"16026SS74975\",\n" +
+                "\"addtime\":\"2016-01-29 10:55:00\",\n" +
+                "\"promoney\":\"60\",\n" +
+                "\"multiply\":\"2\",\n" +
+                "\"basemoney\":\"2\",\n" +
+                "\"state\":\"1\",\n" +
+                "\"issuc\":\"1\",\n" +
+                "\"buystop\":\"0\",\n" +
+                "\"code\":\"HH|SPF>160129002=3,RQSPF>160129003=2,SPF>160129004=0|2*1\",\n" +
+                "\"match\":\n" +
+                "   [{\"id\":\"160129002\",\n" +
+                "   \"oid\":\"周五002\",\n" +
+                "   \"home\":\"卡塔尔\",\n" +
+                "   \"visit\":\"伊拉克\",\n" +
+                "   \"point\":\"－1\",\n" +
+                "   },\n" +
+                "   {\"id\":\"160129003\",\n" +
+                "   \"oid\":\"周五003\",\n" +
+                "   \"home\":\"南锡\",\n" +
+                "   \"visit\":\"克莱蒙\",\n" +
+                "   \"point\":\"2\",\n" +
+                "   },\n" +
+                "   {\"id\":\"160129004\",\n" +
+                "   \"oid\":\"周五004\",\n" +
+                "   \"home\":\"伊维恩\",\n" +
+                "   \"visit\":\"梅斯\",\n" +
+                "   \"point\":\"－1\",\n" +
+                "   }]\n" +
+                "}";
+        return JSON.parseObject(str);
+    }
 
 }

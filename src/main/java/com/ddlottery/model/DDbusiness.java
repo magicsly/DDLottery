@@ -9,6 +9,8 @@ public class DDbusiness {
 
     private String locname;
 
+    private String bimage;
+
     private String address;
 
     private Float cox;
@@ -73,6 +75,14 @@ public class DDbusiness {
 
     public void setLocname(String locname) {
         this.locname = locname == null ? null : locname.trim();
+    }
+
+    public String getBimage() {
+        return bimage;
+    }
+
+    public void setBimage(String bimage) {
+        this.bimage = bimage == null ? null : bimage.trim();
     }
 
     public String getAddress() {

@@ -32,6 +32,22 @@ public class DDbusinessService {
         return 0;
     }
 
+    public Map nearBusiness(Float cox, Float coy,Integer page){
+        Map<String, Object> map = new HashMap<String, Object>();
+        DDbusiness business = new DDbusiness();
+        business.setCox(cox);
+        business.setCoy(coy);
+        PageBounds pageBounds = new PageBounds(page,pageSize);
+        ArrayList list = DDbusinessMapper.nearBusiness(business,pageBounds);
+        PageList pageList = (PageList)list;
+        map.put("code",0);
+        map.put("list",list);
+        map.put("count",pageList.getPaginator().getTotalCount());
+        map.put("pagesize",pageSize);
+        map.put("page",page);
+        return map;
+    }
+
     public Integer machLogin (String mobile , String md5Code){
         DDbusiness business = DDbusinessMapper.selectByMobile(mobile);
         String str = DigestUtils.md5Hex(business.getMobile()+business.getPwd()+md5key);

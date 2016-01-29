@@ -3,12 +3,14 @@ package com.ddlottery.controller;
 import com.ddlottery.model.DDuser;
 import com.ddlottery.service.DDuserService;
 
+import com.ddlottery.tools.uploadFiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +23,20 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/")
-public class userController {
+public class userController extends baseController{
     @Autowired
     DDuserService DDuserService;
+
+    @RequestMapping("/upload")
+    @ResponseBody
+    public Map upload(
+            @RequestParam(value = "file", required = true) MultipartFile file,
+            HttpServletRequest request
+    ) {
+        uploadFiles uploadFiles = new uploadFiles();
+        Map map =  uploadFiles.upload(file, request);
+        return map;
+    }
 
     @RequestMapping(value = "/postcode")
     @ResponseBody
