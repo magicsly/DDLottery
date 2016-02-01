@@ -37,7 +37,7 @@ public class orderController {
      * @param multiple 倍数
      * @param money 金额
      * @param str 投注串
-     * @param content 备注
+     * @param content 投注场次id（2016001，2016002，2016003）
      * @param closetime 截止时间
      * @return
      * @throws ParseException
@@ -84,16 +84,31 @@ public class orderController {
 
     }
 
+    @RequestMapping(value = "/userorder_list")
+    @ResponseBody
+    public Map userorder_list(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
+                              @RequestParam(value="page",defaultValue = "",required=false) byte print,
+                         @RequestParam(value="page",defaultValue = "",required=false) Integer page
+    ) throws Exception {
+        DDorder order = new DDorder();
+        order.setUid(uid);
+        order.setIsprint(print);
+        Map<String,Object> map = DDorderService.orderList(order, page);
+        return map;
+
+    }
+
     @RequestMapping(value = "/orderprint")
     @ResponseBody
     public Map orderprint(@RequestParam(value="oid",defaultValue = "",required=false) Integer oid,
                          @RequestParam(value="key",defaultValue = "",required=false) String key
     ) throws Exception {
-        Integer code = DDorderService.machinePrintOrder(oid,key);
         Map<String,Object> map = new HashMap<String, Object>();
+        Integer code = DDorderService.machinePrintOrder(oid,key);
         map.put("code",code);
         return map;
     }
+
 
     @RequestMapping(value = "/orderinfo")
     @ResponseBody

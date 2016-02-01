@@ -56,7 +56,7 @@ public class DDorderService {
             DDorderMapper.machUpdateList(bid);
             ArrayList<DDorder> list = DDorderMapper.machOrderList(bid);
             for (DDorder info : list) {
-                String str=getPrintLotCode(info.getStr());
+                String str=getPrintLotCode(info.getStr(),info.getClosetime().toString());
                 info.setStr(str);
             }
             map.put("code",0);
@@ -83,7 +83,9 @@ public class DDorderService {
         }
     }
 
-    public String getPrintLotCode(String betStr) throws Exception {
+    public String getPrintLotCode(
+            String betStr,
+            String closetime) throws Exception {
         Bet bet = new Bet(betStr);
         String str = SlipJCZQ.parse(bet);
 
@@ -97,7 +99,7 @@ public class DDorderService {
         t.appendLineln();
         t.appendHex(str);
         t.appendLineln();
-        t.appendCenterln("投注单过期时间:2015-04-10 13:55:00");
+        t.appendCenterln("投注单过期时间:"+closetime);
         t.appendCenterln("购彩有风险 投注需谨慎");
         t.appendH1Centerln("请务必核对票面内容！");
         t.appendFeed();
