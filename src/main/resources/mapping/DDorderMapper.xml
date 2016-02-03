@@ -45,6 +45,9 @@
         <if test="closetime != null" >
             AND closetime >  #{closetime,jdbcType=TIMESTAMP}
         </if>
+        <if test="isprint!= null" >
+            AND isprint = #{isprint,jdbcType=TINYINT}
+        </if>
         ORDER BY oid desc
     </select>
     <update id="machUpdateList" parameterType="java.lang.Integer" >

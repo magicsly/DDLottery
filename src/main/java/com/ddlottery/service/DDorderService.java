@@ -31,7 +31,6 @@ public class DDorderService {
 
     public Integer addorder(DDorder order){
         order.setCreattime(new Date());
-        order.setState((byte)0);
         DDorderMapper.insertSelective(order);
         return 0;
     }
@@ -47,6 +46,14 @@ public class DDorderService {
         map.put("pagesize",20);
         map.put("page",page);
         return map;
+    }
+
+    public Integer userPrintOrder(Integer oid, Integer bid){
+        DDorder order = new DDorder();
+        order.setOid(oid);
+        order.setBid(bid);
+        order.setState((byte)2);
+        return 0;
     }
 
     public Map orderInfo(Integer oid){
@@ -65,7 +72,8 @@ public class DDorderService {
             DDorderMapper.machUpdateList(bid);
             ArrayList<DDorder> list = DDorderMapper.machOrderList(bid);
             for (DDorder info : list) {
-                String str=getPrintLotCode(info.getStr(),info.getClosetime().toString());
+                String chuan = info.getStr().split("|")[info.getStr().split("|").length];
+                String str=getPrintLotCode(info.getStr(),info.getClosetime().toString(),chuan);
                 info.setStr(str);
             }
             map.put("code",0);
@@ -94,15 +102,16 @@ public class DDorderService {
 
     public String getPrintLotCode(
             String betStr,
-            String closetime) throws Exception {
+            String closetime,
+            String chuan) throws Exception {
         Bet bet = new Bet(betStr);
         String str = SlipJCZQ.parse(bet);
 
         OmrText t = new OmrText();
 
         t.appendH1Centerln("彩票投注单");
-        t.appendCenterln("用户名:足球爱好者");
-        t.appendCenterln("竞彩足球混合过关  8x1");
+        //t.appendCenterln("用户名:足球爱好者");
+        t.appendCenterln("竞彩足球混合过关  "+chuan);
         t.appendCenterln(UUID.randomUUID().toString());
 
         t.appendLineln();

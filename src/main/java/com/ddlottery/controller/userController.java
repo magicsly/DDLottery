@@ -119,20 +119,47 @@ public class userController extends baseController{
         return map;
     }
 
-    @RequestMapping(value = "/editpw")
+    @RequestMapping(value = "/searchpwd")
     @ResponseBody
-    public Map editpw(@RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
-                      @RequestParam(value="mobile",defaultValue = "",required=false) String mobile
+    public Map searchpwd(@RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
+                         @RequestParam(value="mobile",defaultValue = "",required=false) String mobile
+    ) {
+        DDuser user = new DDuser();
+        user.setPwd(pwd);
+        user.setMobile(mobile);
+        Map<String,Object> map = new HashMap<String, Object>();
+        Integer code = DDuserService.searchPwd(user);
+        map.put("code",code);
+        return map;
+    }
+
+    @RequestMapping(value = "/editpwd")
+    @ResponseBody
+    public Map editpwd(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
+                         @RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
+                         @RequestParam(value="newpwd",defaultValue = "",required=false) String newpwd
     ) {
 
         DDuser user = new DDuser();
         user.setPwd(pwd);
-        user.setMobile(mobile);
-        Integer code = DDuserService.editPwd(user);
+        user.setUid(uid);
+        Integer code = DDuserService.editPwd(user, newpwd);
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("code",code);
         return map;
     }
+
+    @RequestMapping(value = "/userinfo")
+    @ResponseBody
+    public Map userinfo(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid
+    ) {
+
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",0);
+        map.put("info",DDuserService.userInfo(uid));
+        return map;
+    }
+
 
     @RequestMapping(value = "/iscode")
     @ResponseBody

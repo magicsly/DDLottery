@@ -62,40 +62,40 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="admin_title"><span>优惠券</span></h1>
-            <div class="col-lg-4">
-            
-	            <div class="form-group ipt_box">
-	                <label>类型</label>
-	                <select class="form-control">
-	                  <option>1</option>
+            <h1 class="admin_title"><span>店铺管理</span><a class="btn btn-primary addnewsd">添加新店</a></h1>
+            <div class="form-group form_box">
+			    <label class="col-sm-2 control-label">按省份选择</label>
+			    <div class="col-sm-2">
+			     <select class="form-control">
+	                  <option>按省份选择</option>
 	                  <option>2</option>
 	                  <option>3</option>
 	                  <option>4</option>
 	                  <option>5</option>
 	                </select>
-	            </div>
-            </div>
-            <div class="col-lg-4">
-	            <div class="form-group ipt_box">
-	                <label>状态</label>
-	                <select class="form-control">
-	                  <option>1</option>
+			    </div>
+			    <div class="col-sm-2">
+			     <select class="form-control">
+	                  <option>按省份选择</option>
 	                  <option>2</option>
 	                  <option>3</option>
 	                  <option>4</option>
 	                  <option>5</option>
 	                </select>
-	            </div>            	
-            </div>
-            <div class="col-lg-4">
-	            <div class="form-group input-group">
-	                <input type="text" class="form-control">
-	                <span class="input-group-btn">
-	                  <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
-	                </span>
-	            </div>
-            </div>
+			    </div>
+			    <div class="col-sm-1">
+			     <button type="button" class="btn btn-primary btn-sm">确定</button>
+			    </div>
+			    <div class="col-sm-1">
+			     或者
+			    </div>
+			    <div class="col-sm-2">
+			     <input class="form-control" placeholder="城市">
+			    </div>
+			    <div class="col-sm-1">
+			     <button type="button" class="btn btn-primary btn-sm">确定</button>
+			    </div>
+			  </div>
           </div>
         </div><!-- /.row -->
 
@@ -105,58 +105,41 @@
 	              <table class="table table-bordered table-hover table-striped tablesorter">
 	                <thead>
 		                  <tr>
-			                  <th class="header">优惠券名称 <i class="fa fa-sort"></i></th>
-			                  <th class="header">优惠券ID<i class="fa fa-sort"></i></th>
-			                  <th class="header">创建时间<i class="fa fa-sort"></i></th>
-			                  <th class="header">有效时间 <i class="fa fa-sort"></i></th>
-			                  <th class="header">发型行 <i class="fa fa-sort"></i></th>
-			                  <th class="header">已领取<i class="fa fa-sort"></i></th>
-			                  <th class="header">已使用<i class="fa fa-sort"></i></th>
-			                  <th class="header">状态 <i class="fa fa-sort"></i></th>
-						<th class="header">操作 <i class="fa fa-sort"></i></th>
+			                  <th class="header">彩店名称 <i class="fa fa-sort"></i></th>
+			                  <th class="header">店主姓名<i class="fa fa-sort"></i></th>
+			                  <th class="header">联系电话<i class="fa fa-sort"></i></th>
+			                  <th class="header">地址 <i class="fa fa-sort"></i></th>
+			                  <th class="header">入住时间 <i class="fa fa-sort"></i></th>
+			                  <th class="header">操作<i class="fa fa-sort"></i></th>
 		                  </tr>
 	                </thead>
 	                <tbody>
 	                  <tr>
-	                    <td><a href="">金秋特别回馈</a></td>
+	                    <td><a href="">新奉公路4681号</a></td>
 	                    <td>kr123k15035</td>
-	                    <td>16-01-27</td>
-	                    <td>16-01-27至16-01-27</td>
-	                    <td>999</td>
-	                    <td>999</td>
-	                    <td>999</td>
-	                    <td>未开始</td>
-	                    <td class="xq_type"><a href="" >详情</a><em>|</em><a href="">明细</a><em>|</em><a href="">作废</a></td>
+	                    <td>135487954</td>
+	                    <td>新奉公路4681号新奉公路4681号</td>
+	                    <td>16-01-23</td>
+	                    <td class="xq_type"><a href="" >编辑</a></td>
 	                  </tr>
 	                  <tr>
-	                    <td colspan="9">....</td>
+	                    <td colspan="6">....</td>
 	                  </tr>
 	                  <tr>
-	                    <td><a href="">金秋特别回馈</a></td>
+	                    <td><a href="">新奉公路4681号</a></td>
 	                    <td>kr123k15035</td>
-	                    <td>16-01-27</td>
-	                    <td>16-01-27至16-01-27</td>
-	                    <td>999</td>
-	                    <td>999</td>
-	                    <td>999</td>
-	                    <td>已作废</td>
-	                    <td class="xq_type"><a href="" >详情</a><em>|</em><a href="">明细</a><em>|</em><a href="">作废</a></td>
+	                    <td>135487954</td>
+	                    <td>新奉公路4681号新奉公路4681号</td>
+	                    <td>16-01-23</td>
+	                    <td class="xq_type"><a href="" >编辑</a></td>
 	                  </tr>
 	                  <tr>
-	                    <td colspan="9" class="page_box">
-	                    	<span class="listtable_all">共有4条，每页显示20条</span>
-	                    	<ul class="pagination">
-			                <li class="disabled"><a href="#">首页</a></li>
-			                <li><a href="#">前一页</a></li>
-			                <li class="active"><a href="#">1</a></li>
-			                <li><a href="#">2</a></li>
-			                <li><a href="#">3</a></li>
-			                <li><a href="#">4</a></li>
-			                <li><a href="#">5</a></li>
-			                <li><a href="#">后一页</a></li>
-			                <li><a href="#">末页</a></li>
-			              </ul>
-	                    </td>
+	                    <td><a href="">新奉公路4681号</a></td>
+	                    <td>kr123k15035</td>
+	                    <td>135487954</td>
+	                    <td>新奉公路4681号新奉公路4681号</td>
+	                    <td>16-01-23</td>
+	                    <td class="xq_type"><a href="" >编辑</a></td>
 	                  </tr>
 	                </tbody>
 	              </table>

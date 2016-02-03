@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by ElNino on 16/1/20.
@@ -117,10 +118,38 @@ public class DDuserService {
         }
     }
 
-    public Integer editPwd(DDuser user){
+    public Integer editPwd(DDuser user,String pwd){
+        user = DDuserMapper.selectbyuid(user);
+        String md5pw =DigestUtils.md5Hex(pwd);
+        user.setPwd(md5pw);
+        user.setPwd(md5pw);
+        DDuserMapper.updateByPrimaryKeySelective(user);
+        return 0;
+    }
+
+    public Integer searchPwd(DDuser user){
         String md5pw =DigestUtils.md5Hex(user.getPwd());
         user.setPwd(md5pw);
         DDuserMapper.editPwd(user);
+        return 0;
+    }
+
+    public DDuser userInfo(Integer uid){
+        return DDuserMapper.selectByPrimaryKey(uid);
+    }
+
+    public Integer editMobile(DDuser user,String newMobile,String code ){
+        DDregcode regcode = new DDregcode();
+        regcode.setMobile(user.getMobile());
+        regcode.setIp(user.getIp());
+        regcode.setCode(code);
+        regcode.setClosetime(new Date());
+        Integer isreg = DDregcodeMapper.selectcode(regcode);
+        if(isreg == 0){
+            return 9001;//验证码错误
+        }
+        user.setMobile(newMobile);
+        DDuserMapper.updateByPrimaryKeySelective(user);
         return 0;
     }
 

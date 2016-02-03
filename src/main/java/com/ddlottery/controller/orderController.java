@@ -39,6 +39,7 @@ public class orderController {
      * @param str 投注串
      * @param content 投注场次id（2016001，2016002，2016003）
      * @param closetime 截止时间
+     * @param state (0保存订单，2打印订单)
      * @return
      * @throws ParseException
      */
@@ -53,6 +54,7 @@ public class orderController {
                         @RequestParam(value="money",defaultValue = "",required=false) Float money,
                         @RequestParam(value="str",defaultValue = "",required=false) String str,
                         @RequestParam(value="content",defaultValue = "",required=false) String content,
+                        @RequestParam(value="state",defaultValue = "",required=false) byte state,
                         @RequestParam(value="closetime",defaultValue = "",required=false) String closetime
     ) throws ParseException {
         DDorder order = new DDorder();
@@ -65,6 +67,8 @@ public class orderController {
         order.setMoney(money);
         order.setStr(str);
         order.setContent(content);
+        order.setIsprint((byte)0);
+        order.setState(state);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
         Date closedate = sdf.parse(closetime);
         order.setClosetime(closedate);
@@ -81,21 +85,30 @@ public class orderController {
     ) throws Exception {
         Map<String,Object> map = DDorderService.machineGetOrder(bid,key);
         return map;
-
     }
 
     @RequestMapping(value = "/userorderlist")
     @ResponseBody
     public Map userorder_list(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
-                              @RequestParam(value="print",defaultValue = "",required=false) byte print,
+                              @RequestParam(value="print",defaultValue = "",required=false) float print,
                          @RequestParam(value="page",defaultValue = "",required=false) Integer page
     ) throws Exception {
         DDorder order = new DDorder();
         order.setUid(uid);
-        order.setIsprint(print);
+        order.setIsprint((byte)print);
         Map<String,Object> map = DDorderService.orderList(order, page);
         return map;
+    }
 
+    @RequestMapping(value = "/userorderprint")
+    @ResponseBody
+    public Map userorderprint(@RequestParam(value="oid",defaultValue = "",required=false) Integer oid,
+                          @RequestParam(value="bid",defaultValue = "",required=false) Integer bid
+    ) throws Exception {
+        Map<String,Object> map = new HashMap<String, Object>();
+        Integer code = DDorderService.userPrintOrder(oid,bid);
+        map.put("code",code);
+        return map;
     }
 
     @RequestMapping(value = "/orderprint")

@@ -26,6 +26,12 @@
     <select id="isuser" resultType="int" parameterType="java.lang.String">
         SELECT COUNT(0) FROM dd_user where mobile=#{mobile,jdbcType=CHAR}
     </select>
+    <select id="selectbyuid" resultMap="BaseResultMap" parameterType="com.ddlottery.model.DDuser" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_user
+        where uid = #{uid,jdbcType=INTEGER} AND pwd = #{pwd,jdbcType=CHAR}
+    </select>
     <select id="userlogin" resultMap="BaseResultMap" parameterType="com.ddlottery.model.DDuser" >
         select
         <include refid="Base_Column_List" />

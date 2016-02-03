@@ -19,6 +19,8 @@ public interface DDuserMapper {
 
     DDuser userlogin(DDuser record);
 
+    DDuser selectbyuid(DDuser record);
+
     int isuser (String mobile);
 
     int editPwd(DDuser record);
