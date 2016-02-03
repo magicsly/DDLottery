@@ -97,19 +97,4 @@ public class businessController {
         return map;
     }
 
-    @RequestMapping("business_order")
-    public ModelAndView md5(String bid,ModelAndView modelAndView){
-        String codes = DigestUtils.md5Hex(bid + DDbusinessService.md5key);
-        modelAndView.addObject("md5", codes);
-        return modelAndView;
-    }
-
-    @RequestMapping("test")
-    public ModelAndView test(String mobile,ModelAndView modelAndView){
-        System.out.println(mobile);
-        modelAndView.addObject("mobile",mobile);
-        return modelAndView;
-    }
-
-
 }

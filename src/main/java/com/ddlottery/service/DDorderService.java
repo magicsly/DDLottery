@@ -49,6 +49,15 @@ public class DDorderService {
         return map;
     }
 
+    public Map orderInfo(Integer oid){
+        Map<String,Object> map = new HashMap<String, Object>();
+        DDorder order = DDorderMapper.selectByPrimaryKey(oid);
+        map.put("code",0);
+        map.put("info",order);
+        map.put("match","");
+        return map;
+    }
+
     public Map machineGetOrder(Integer bid , String md5Code) throws Exception {
         Map<String,Object> map = new HashMap<String, Object>();
         String md5 = DigestUtils.md5Hex(bid.toString() + DDbusinessService.md5key);

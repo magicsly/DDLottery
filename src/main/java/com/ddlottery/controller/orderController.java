@@ -84,10 +84,10 @@ public class orderController {
 
     }
 
-    @RequestMapping(value = "/userorder_list")
+    @RequestMapping(value = "/userorderlist")
     @ResponseBody
     public Map userorder_list(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
-                              @RequestParam(value="page",defaultValue = "",required=false) byte print,
+                              @RequestParam(value="print",defaultValue = "",required=false) byte print,
                          @RequestParam(value="page",defaultValue = "",required=false) Integer page
     ) throws Exception {
         DDorder order = new DDorder();
