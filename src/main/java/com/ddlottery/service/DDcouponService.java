@@ -32,10 +32,22 @@ public class DDcouponService {
     @Autowired
     DDbusinessMapper DDbusinessMapper;
 
-    public Integer receiveCoupon(Integer cid,Integer uid){
+    public Integer addCoupon(DDcoupon coupon){
+        coupon.setCreattime(new Date());
+        DDcouponMapper.insertSelective(coupon);
+        return 0;
+    }
+
+    public Integer receiveCoupon(Integer cid,Integer uid) throws Exception {
         DDcoupon coupon= DDcouponMapper.selectByPrimaryKey(cid);
         Date now = new Date();
         if(coupon.getEndtime().getTime()>now.getTime()){
+            Integer num = coupon.getNum()-1;
+            if(num<0){
+                return 2;
+            }
+            coupon.setNum(num);
+            DDcouponMapper.updateByPrimaryKeySelective(coupon);
             DDuser user = DDuserMapper.selectByPrimaryKey(uid);
             DDbusiness business = DDbusinessMapper.selectByPrimaryKey(coupon.getBid());
             DDcouponInfo info = new DDcouponInfo();
@@ -47,11 +59,14 @@ public class DDcouponService {
             info.setBname(business.getLocname());
             info.setBmobile(business.getMobile());
             info.setUname(user.getMobile());
-            DDcouponInfoMapper.insertSelective(info);
-            return 0;
-            //info.setCodenum();
+            Integer ciid = DDcouponInfoMapper.insertSelective(info);
+            String code = md5_16.md5(ciid.toString());
+            info.setCodenum(code);
+            return DDcouponInfoMapper.updateByPrimaryKeySelective(info);
         }else {
             return 1;
         }
     }
+
+    //public Integer useCoupon(Integer )
 }

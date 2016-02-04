@@ -149,6 +149,24 @@ public class userController extends baseController{
         return map;
     }
 
+    @RequestMapping(value = "/editmobile")
+    @ResponseBody
+    public Map editmobile(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
+                          @RequestParam(value="mobile",defaultValue = "",required=false) String mobile,
+                       @RequestParam(value="newmobile",defaultValue = "",required=false) String newmobile,
+                       @RequestParam(value="code",defaultValue = "",required=false) String code
+    ) {
+
+        DDuser user = new DDuser();
+        user.setUid(uid);
+        user.setMobile(mobile);
+        Integer newcode = DDuserService.editMobile(user, newmobile,code);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",newcode);
+        return map;
+    }
+
+
     @RequestMapping(value = "/userinfo")
     @ResponseBody
     public Map userinfo(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid
