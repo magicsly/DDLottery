@@ -11,17 +11,25 @@
     <result column="bid" property="bid" jdbcType="INTEGER" />
     <result column="bname" property="bname" jdbcType="VARCHAR" />
     <result column="bmobile" property="bmobile" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="REAL" />
     <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
     <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
     <result column="usetime" property="usetime" jdbcType="TIMESTAMP" />
     <result column="isuse" property="isuse" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, cid, codenum, uid, uname, gettime, bid, bname, bmobile, starttime, endtime, usetime, 
-    isuse
+    id, cid, codenum, uid, uname, gettime, bid, bname, bmobile, money, starttime, endtime, 
+    usetime, isuse
   </sql>
+    <select id="selectByCodenum" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_coupon_info
+        where codenum =  #{codenum,jdbcType=CHAR},
+    </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from dd_coupon_info
     where id = #{id,jdbcType=INTEGER}
@@ -34,15 +42,15 @@
     insert into dd_coupon_info (id, cid, codenum, 
       uid, uname, gettime, 
       bid, bname, bmobile, 
-      starttime, endtime, usetime, 
-      isuse)
+      money, starttime, endtime, 
+      usetime, isuse)
     values (#{id,jdbcType=INTEGER}, #{cid,jdbcType=INTEGER}, #{codenum,jdbcType=CHAR}, 
       #{uid,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR}, #{gettime,jdbcType=TIMESTAMP}, 
       #{bid,jdbcType=INTEGER}, #{bname,jdbcType=VARCHAR}, #{bmobile,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{usetime,jdbcType=TIMESTAMP}, 
-      #{isuse,jdbcType=TINYINT})
+      #{money,jdbcType=REAL}, #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
+      #{usetime,jdbcType=TIMESTAMP}, #{isuse,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.ddlottery.model.DDcouponInfo"  keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.ddlottery.model.DDcouponInfo" >
     insert into dd_coupon_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,6 +79,9 @@
       </if>
       <if test="bmobile != null" >
         bmobile,
+      </if>
+      <if test="money != null" >
+        money,
       </if>
       <if test="starttime != null" >
         starttime,
@@ -113,6 +124,9 @@
       <if test="bmobile != null" >
         #{bmobile,jdbcType=VARCHAR},
       </if>
+      <if test="money != null" >
+        #{money,jdbcType=REAL},
+      </if>
       <if test="starttime != null" >
         #{starttime,jdbcType=TIMESTAMP},
       </if>
@@ -154,6 +168,9 @@
       <if test="bmobile != null" >
         bmobile = #{bmobile,jdbcType=VARCHAR},
       </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=REAL},
+      </if>
       <if test="starttime != null" >
         starttime = #{starttime,jdbcType=TIMESTAMP},
       </if>
@@ -179,6 +196,7 @@
       bid = #{bid,jdbcType=INTEGER},
       bname = #{bname,jdbcType=VARCHAR},
       bmobile = #{bmobile,jdbcType=VARCHAR},
+      money = #{money,jdbcType=REAL},
       starttime = #{starttime,jdbcType=TIMESTAMP},
       endtime = #{endtime,jdbcType=TIMESTAMP},
       usetime = #{usetime,jdbcType=TIMESTAMP},

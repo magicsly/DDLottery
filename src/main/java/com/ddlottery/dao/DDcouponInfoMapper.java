@@ -14,4 +14,6 @@ public interface DDcouponInfoMapper {
     int updateByPrimaryKeySelective(DDcouponInfo record);
 
     int updateByPrimaryKey(DDcouponInfo record);
+
+    DDcouponInfo selectByCodenum(String codenum);
 }

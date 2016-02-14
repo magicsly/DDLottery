@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +63,7 @@
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="admin_title"><span>店铺管理</span><a class="btn btn-primary addnewsd">添加新店</a></h1>
+            <h1 class="admin_title"><span>店铺管理</span><a class="btn btn-primary addnewsd" href="business_info">添加新店</a></h1>
             <div class="form-group form_box">
 			    <label class="col-sm-2 control-label">按省份选择</label>
 			    <div class="col-sm-2">
@@ -114,33 +115,18 @@
 		                  </tr>
 	                </thead>
 	                <tbody>
+                    <c:forEach items="${businessList}" var="list">
 	                  <tr>
-	                    <td><a href="">新奉公路4681号</a></td>
-	                    <td>kr123k15035</td>
-	                    <td>135487954</td>
-	                    <td>新奉公路4681号新奉公路4681号</td>
-	                    <td>16-01-23</td>
+	                    <td><a href=""> ${list.locname}</a></td>
+	                    <td>${list.realname}</td>
+	                    <td>${list.mobile}</td>
+	                    <td>${list.address}
+                            <a class="btn btn-success btn-xs">地图</a>
+                        </td>
+	                    <td>${list.creattime}</td>
 	                    <td class="xq_type"><a href="" >编辑</a></td>
 	                  </tr>
-	                  <tr>
-	                    <td colspan="6">....</td>
-	                  </tr>
-	                  <tr>
-	                    <td><a href="">新奉公路4681号</a></td>
-	                    <td>kr123k15035</td>
-	                    <td>135487954</td>
-	                    <td>新奉公路4681号新奉公路4681号</td>
-	                    <td>16-01-23</td>
-	                    <td class="xq_type"><a href="" >编辑</a></td>
-	                  </tr>
-	                  <tr>
-	                    <td><a href="">新奉公路4681号</a></td>
-	                    <td>kr123k15035</td>
-	                    <td>135487954</td>
-	                    <td>新奉公路4681号新奉公路4681号</td>
-	                    <td>16-01-23</td>
-	                    <td class="xq_type"><a href="" >编辑</a></td>
-	                  </tr>
+                    </c:forEach>
 	                </tbody>
 	              </table>
 	            </div>

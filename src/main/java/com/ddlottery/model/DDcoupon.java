@@ -13,7 +13,7 @@ public class DDcoupon {
 
     private Integer restnum;
 
-    private Integer bid;
+    private String bid;
 
     private String bname;
 
@@ -69,11 +69,11 @@ public class DDcoupon {
         this.restnum = restnum;
     }
 
-    public Integer getBid() {
+    public String getBid() {
         return bid;
     }
 
-    public void setBid(Integer bid) {
+    public void setBid(String bid) {
         this.bid = bid;
     }
 

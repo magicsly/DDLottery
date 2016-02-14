@@ -65,9 +65,11 @@ public class DDuserService {
         if(userConf == 0){
             String md5pw = DigestUtils.md5Hex(user.getPwd());
             user.setPwd(md5pw);
+            user.setUname(user.getMobile());
             user.setCreattime(new Date());
             DDuserMapper.insertSelective(user);
             regcode.setUsetime(new Date());
+            regcode.setIsuse((byte)1);
             DDregcodeMapper.updateCode(regcode);
             return 0;
         }else{
@@ -119,10 +121,14 @@ public class DDuserService {
     }
 
     public Integer editPwd(DDuser user,String pwd){
+        String md5pw =DigestUtils.md5Hex(user.getPwd());
+        user.setPwd(md5pw);
         user = DDuserMapper.selectbyuid(user);
-        String md5pw =DigestUtils.md5Hex(pwd);
-        user.setPwd(md5pw);
-        user.setPwd(md5pw);
+        if(user == null){
+            return -1;
+        }
+        String newmd5pw =DigestUtils.md5Hex(pwd);
+        user.setPwd(newmd5pw);
         DDuserMapper.updateByPrimaryKeySelective(user);
         return 0;
     }
@@ -147,6 +153,12 @@ public class DDuserService {
         Integer isreg = DDregcodeMapper.selectcode(regcode);
         if(isreg == 0){
             return 9001;//验证码错误
+        }
+        String md5pw =DigestUtils.md5Hex(user.getPwd());
+        user.setPwd(md5pw);
+        user = DDuserMapper.selectbyuid(user);
+        if(user==null){
+            return -1;
         }
         user.setMobile(newMobile);
         DDuserMapper.updateByPrimaryKeySelective(user);
@@ -176,6 +188,7 @@ public class DDuserService {
         if(isreg == 0){
             return 9001;//验证码错误
         }else{
+            regcode.setIsuse((byte)1);
             regcode.setUsetime(new Date());
             DDregcodeMapper.updateCode(regcode);
             return 0;

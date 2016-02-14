@@ -5,6 +5,7 @@
     <id column="uid" property="uid" jdbcType="INTEGER" />
     <result column="mobile" property="mobile" jdbcType="CHAR" />
     <result column="pwd" property="pwd" jdbcType="CHAR" />
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="bigimg" property="bigimg" jdbcType="CHAR" />
     <result column="smallimg" property="smallimg" jdbcType="CHAR" />
@@ -13,13 +14,12 @@
     <result column="ip" property="ip" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    uid, mobile, pwd, nickname, bigimg, smallimg, creattime, jointime, ip
+    uid, mobile, pwd, uname, nickname, bigimg, smallimg, creattime, jointime, ip
   </sql>
-
-    <update id="editPwd" parameterType="com.ddlottery.model.DDuser" >
+  	<update id="editPwd" parameterType="com.ddlottery.model.DDuser" >
         update dd_user
         set
-        pwd = #{pwd,jdbcType=CHAR},
+        pwd = #{pwd,jdbcType=CHAR}
         where mobile = #{mobile,jdbcType=CHAR}
     </update>
 
@@ -38,7 +38,6 @@
         from dd_user
         where mobile = #{mobile,jdbcType=CHAR} AND pwd = #{pwd,jdbcType=CHAR}
     </select>
-
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -50,12 +49,14 @@
     where uid = #{uid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ddlottery.model.DDuser" >
-    insert into dd_user (uid, mobile, pwd, nickname, 
-      bigimg, smallimg, creattime, 
-      jointime, ip)
-    values (#{uid,jdbcType=INTEGER}, #{mobile,jdbcType=CHAR}, #{pwd,jdbcType=CHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{bigimg,jdbcType=CHAR}, #{smallimg,jdbcType=CHAR}, #{creattime,jdbcType=TIMESTAMP}, 
-      #{jointime,jdbcType=TIMESTAMP}, #{ip,jdbcType=CHAR})
+    insert into dd_user (uid, mobile, pwd, uname, 
+      nickname, bigimg, smallimg, 
+      creattime, jointime, ip
+      )
+    values (#{uid,jdbcType=INTEGER}, #{mobile,jdbcType=CHAR}, #{pwd,jdbcType=CHAR}, #{uname,jdbcType=VARCHAR}, 
+      #{nickname,jdbcType=VARCHAR}, #{bigimg,jdbcType=CHAR}, #{smallimg,jdbcType=CHAR}, 
+      #{creattime,jdbcType=TIMESTAMP}, #{jointime,jdbcType=TIMESTAMP}, #{ip,jdbcType=CHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ddlottery.model.DDuser" >
     insert into dd_user
@@ -68,6 +69,9 @@
       </if>
       <if test="pwd != null" >
         pwd,
+      </if>
+      <if test="uname != null" >
+        uname,
       </if>
       <if test="nickname != null" >
         nickname,
@@ -98,6 +102,9 @@
       <if test="pwd != null" >
         #{pwd,jdbcType=CHAR},
       </if>
+      <if test="uname != null" >
+        #{uname,jdbcType=VARCHAR},
+      </if>
       <if test="nickname != null" >
         #{nickname,jdbcType=VARCHAR},
       </if>
@@ -127,6 +134,9 @@
       <if test="pwd != null" >
         pwd = #{pwd,jdbcType=CHAR},
       </if>
+      <if test="uname != null" >
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
       <if test="nickname != null" >
         nickname = #{nickname,jdbcType=VARCHAR},
       </if>
@@ -152,6 +162,7 @@
     update dd_user
     set mobile = #{mobile,jdbcType=CHAR},
       pwd = #{pwd,jdbcType=CHAR},
+      uname = #{uname,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},
       bigimg = #{bigimg,jdbcType=CHAR},
       smallimg = #{smallimg,jdbcType=CHAR},

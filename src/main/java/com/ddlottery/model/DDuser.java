@@ -9,6 +9,8 @@ public class DDuser {
 
     private String pwd;
 
+    private String uname;
+
     private String nickname;
 
     private String bigimg;
@@ -43,6 +45,14 @@ public class DDuser {
 
     public void setPwd(String pwd) {
         this.pwd = pwd == null ? null : pwd.trim();
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname == null ? null : uname.trim();
     }
 
     public String getNickname() {

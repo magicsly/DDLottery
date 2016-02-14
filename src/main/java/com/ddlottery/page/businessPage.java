@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Created by ElNino on 16/2/1.
  */
@@ -25,6 +28,13 @@ public class businessPage {
 
     @RequestMapping("business_list")
     public ModelAndView business_list(ModelAndView modelAndView){
+        Map businessListMap = DDbusinessService.business_list(1);
+        modelAndView.addObject("businessList",businessListMap.get("list"));
+        return modelAndView;
+    }
+
+    @RequestMapping("business_info")
+    public ModelAndView business_info(ModelAndView modelAndView){
         return modelAndView;
     }
 }

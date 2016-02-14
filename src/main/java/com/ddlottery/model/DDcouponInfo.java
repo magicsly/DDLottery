@@ -21,6 +21,8 @@ public class DDcouponInfo {
 
     private String bmobile;
 
+    private Float money;
+
     private Date starttime;
 
     private Date endtime;
@@ -99,6 +101,14 @@ public class DDcouponInfo {
 
     public void setBmobile(String bmobile) {
         this.bmobile = bmobile == null ? null : bmobile.trim();
+    }
+
+    public Float getMoney() {
+        return money;
+    }
+
+    public void setMoney(Float money) {
+        this.money = money;
     }
 
     public Date getStarttime() {

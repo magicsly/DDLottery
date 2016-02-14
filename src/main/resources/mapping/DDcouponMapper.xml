@@ -7,7 +7,7 @@
     <result column="money" property="money" jdbcType="REAL" />
     <result column="num" property="num" jdbcType="INTEGER" />
     <result column="restnum" property="restnum" jdbcType="INTEGER" />
-    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="bid" property="bid" jdbcType="VARCHAR" />
     <result column="bname" property="bname" jdbcType="VARCHAR" />
     <result column="fullmuch" property="fullmuch" jdbcType="REAL" />
     <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
@@ -37,7 +37,7 @@
       endtime, limitnum, tips, 
       creattime)
     values (#{cid,jdbcType=INTEGER}, #{types,jdbcType=TINYINT}, #{money,jdbcType=REAL}, 
-      #{num,jdbcType=INTEGER}, #{restnum,jdbcType=INTEGER}, #{bid,jdbcType=INTEGER}, 
+      #{num,jdbcType=INTEGER}, #{restnum,jdbcType=INTEGER}, #{bid,jdbcType=VARCHAR},
       #{bname,jdbcType=VARCHAR}, #{fullmuch,jdbcType=REAL}, #{starttime,jdbcType=TIMESTAMP}, 
       #{endtime,jdbcType=TIMESTAMP}, #{limitnum,jdbcType=INTEGER}, #{tips,jdbcType=VARCHAR}, 
       #{creattime,jdbcType=TIMESTAMP})
@@ -102,7 +102,7 @@
         #{restnum,jdbcType=INTEGER},
       </if>
       <if test="bid != null" >
-        #{bid,jdbcType=INTEGER},
+        #{bid,jdbcType=VARCHAR},
       </if>
       <if test="bname != null" >
         #{bname,jdbcType=VARCHAR},
@@ -143,7 +143,7 @@
         restnum = #{restnum,jdbcType=INTEGER},
       </if>
       <if test="bid != null" >
-        bid = #{bid,jdbcType=INTEGER},
+        bid = #{bid,jdbcType=VARCHAR},
       </if>
       <if test="bname != null" >
         bname = #{bname,jdbcType=VARCHAR},
@@ -175,7 +175,7 @@
       money = #{money,jdbcType=REAL},
       num = #{num,jdbcType=INTEGER},
       restnum = #{restnum,jdbcType=INTEGER},
-      bid = #{bid,jdbcType=INTEGER},
+      bid = #{bid,jdbcType=VARCHAR},
       bname = #{bname,jdbcType=VARCHAR},
       fullmuch = #{fullmuch,jdbcType=REAL},
       starttime = #{starttime,jdbcType=TIMESTAMP},
