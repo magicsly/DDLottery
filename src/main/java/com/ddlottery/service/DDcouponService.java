@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ddlottery.tools.md5_16;
+
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -46,28 +48,38 @@ public class DDcouponService {
         return 0;
     }
 
+    public ArrayList couponBybid(Integer bid){
+        return DDcouponMapper.selectByBid(bid);
+    }
+
+    public ArrayList couponByuid(Integer uid){
+        return DDcouponInfoMapper.selectByUid(uid);
+    }
+
     public Integer receiveCoupon(Integer cid,Integer uid) throws Exception {
         DDcoupon coupon= DDcouponMapper.selectByPrimaryKey(cid);
         Date now = new Date();
-        if(coupon.getEndtime().getTime()>now.getTime()) {
+        if(coupon.getEndtime().getTime()<now.getTime()) {
             return -1;
         }
-        Integer num = coupon.getNum()-1;
-        if(num<0){
+        Integer restnum = coupon.getRestnum()-1;
+        if(restnum<0){
             return -2;
         }
 
-        coupon.setNum(num);
+        coupon.setRestnum(restnum);
         DDcouponMapper.updateByPrimaryKeySelective(coupon);
         DDuser user = DDuserMapper.selectByPrimaryKey(uid);
         DDcouponInfo info = new DDcouponInfo();
         info.setIsuse((byte)0);
         info.setEndtime(coupon.getEndtime());
-        info.setStarttime(new Date());
+        info.setStarttime(coupon.getStarttime());
         info.setCid(coupon.getCid());
+        info.setUid(uid);
         info.setUname(user.getMobile());
+        info.setGettime(new Date());
         Integer ciid = DDcouponInfoMapper.insertSelective(info);
-        String code = md5_16.md5(ciid.toString()+couponekey+user.getMobile());
+        String code = md5_16.md5(ciid.toString()+couponekey+user.getMobile()).substring(0,8);
         code = ciid.toString()+"-"+code;
         info.setCodenum(code);
         return DDcouponInfoMapper.updateByPrimaryKeySelective(info);
@@ -81,8 +93,8 @@ public class DDcouponService {
         }
         String ciid = code.split("-")[0];
         DDuser user = DDuserMapper.selectByPrimaryKey(info.getUid());
-        String codenum = md5_16.md5(ciid.toString()+couponekey+user.getMobile());
-        if(!codenum.equals(code)){
+        String codenum = md5_16.md5(ciid.toString()+couponekey+user.getMobile()).substring(0, 8);
+        if(!codenum.equals(code.split("-")[1])){
             return 1;//号码错误
         }
         if(info.getIsuse()==1){
@@ -93,7 +105,7 @@ public class DDcouponService {
             return 3;//已过期
         }
         DDcoupon coupon = DDcouponMapper.selectByPrimaryKey(info.getCid());
-        if(coupon.getBid() !="all" && coupon.getBid().indexOf("["+bid.toString()+"]")==-1){
+        if(coupon.getBid() !="all" && !coupon.getBid().equals(bid)){
             return 4;//不能再此家店铺使用
         }
         DDbusiness business = DDbusinessMapper.selectByPrimaryKey(bid);

@@ -93,7 +93,7 @@
 				            </select></div>
 					    </div>
 					    <div class="col-sm-3">
-					      <input class="form-control" id="address" name="address" value="上海市徐汇区虹梅路2005号5号楼B座">
+					      <input class="form-control" id="address" name="address" value="">
 					    </div>
 					  </div>
 
@@ -105,10 +105,12 @@
 					  </div>
 
 					  <div class="form-group">
-					    <label for="bimage" class="col-sm-2 control-label">彩店照片</label>
-					    <div class="col-sm-5">
-						<input type="file" id="bimage" name="bimage">
-					    </div>
+
+                          <label for="bimage" class="col-sm-2 control-label">彩店照片</label>
+                              <form method="post" id="myform" action="upload" enctype="multipart/form-data">
+                                  <input type="file" name="file">
+                                  <input type="submit" value="提交表单">
+                              </form>
 					  </div>
 					  <div class="form-group">
 					    <label  class="col-sm-2 control-label">营业类型</label>
@@ -137,7 +139,7 @@
 					  <div class="form-group">
 					    <label for="inputPassword3" class="col-sm-2 control-label">身份证照片</label>
 					    <div class="col-sm-5">
-						<input type="file">
+						    <input type="file">
 					    </div>
 					  </div>
 
@@ -176,12 +178,15 @@
 
     <!-- JavaScript -->
     <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/ajaxfileupload.js"></script>
     <script src="js/bootstrap.js"></script>
     <!-- Page Specific Plugins -->    <script src="js/raphael-min.js"></script>
     <script src="js/morris-0.4.3.min.js"></script>
     <script src="js/morris/chart-data-morris.js"></script>
     <script src="js/tablesorter/jquery.tablesorter.js"></script>
     <script src="js/tablesorter/tables.js"></script>
+    <script type="application/javascript">
 
+    </script>
   </body>
 </html>

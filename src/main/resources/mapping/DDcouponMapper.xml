@@ -20,6 +20,17 @@
     cid, types, money, num, restnum, bid, bname, fullmuch, starttime, endtime, limitnum, 
     tips, creattime
   </sql>
+    <select id="selectByBid" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
+        <![CDATA[
+        select
+        cid, types, money, num, restnum, bid, bname, fullmuch, starttime, endtime, limitnum,
+        tips
+        from dd_coupon
+        where #{bid,jdbcType=INTEGER} = bid AND types = 1
+        AND starttime < now() and endtime > now()
+        AND restnum > 0
+        ]]>
+    </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

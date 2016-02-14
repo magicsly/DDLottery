@@ -252,4 +252,5 @@ public class DDbusiness {
     public void setState(Byte state) {
         this.state = state;
     }
+
 }

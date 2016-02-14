@@ -28,19 +28,30 @@
     <result column="ip" property="ip" jdbcType="CHAR" />
     <result column="state" property="state" jdbcType="TINYINT" />
   </resultMap>
+    <resultMap id="businessMap" type="java.util.HashMap" >
+        <id column="bid" property="bid" jdbcType="INTEGER" />
+        <result column="locname" property="locname" jdbcType="VARCHAR" />
+        <result column="bimage" property="bimage" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="cox" property="cox" jdbcType="REAL" />
+        <result column="coy" property="coy" jdbcType="REAL" />
+        <result column="bname" property="bname" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="CHAR" />
+        <result column="saletime" property="saletime" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="TINYINT" />
+        <result column="state" property="state" jdbcType="TINYINT" />
+        <collection ofType="java.util.Map" property="coupon" javaType="ArrayList" select="com.ddlottery.dao.DDcouponMapper.selectByBid" column="bid"/>
+    </resultMap>
   <sql id="Base_Column_List" >
     bid, pwd, bimage,locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
     bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime, 
     logintime, ip, state
   </sql>
-    <select id="nearBusiness" resultType="java.util.HashMap">
+    <select id="nearBusiness" resultMap="businessMap" parameterType="com.ddlottery.model.DDbusiness">
         select
-        bid, bimage, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
-        bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime,
-        logintime, ip, state,
+        bid, bimage, locname, address, cox, coy, bname, mobile, saletime, type, state,
         (POWER(MOD(ABS(cox-#{cox,jdbcType=REAL}),360),2) + POWER(ABS(coy-#{coy,jdbcType=REAL}),2)) AS distance
         from dd_business
-        order by distance
     </select>
   <select id="selectBusiness" resultMap="BaseResultMap">
         select

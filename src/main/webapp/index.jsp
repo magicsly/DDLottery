@@ -18,6 +18,10 @@
     <div id="wrapper">
         <%@ include file="WEB-INF/pages/top.jsp"%>
         <div id="page-wrapper">
+            <form method="post" id="myform" action="upload" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" value="提交表单">
+            </form>
         </div>
     </div><!-- /#wrapper -->
     <!-- JavaScript -->

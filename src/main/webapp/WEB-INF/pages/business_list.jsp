@@ -124,7 +124,10 @@
                             <a class="btn btn-success btn-xs">地图</a>
                         </td>
 	                    <td>${list.creattime}</td>
-	                    <td class="xq_type"><a href="" >编辑</a></td>
+	                    <td class="xq_type">
+                            <a href="" >添加优惠券</a>
+                            <a href="" >编辑</a>
+                        </td>
 	                  </tr>
                     </c:forEach>
 	                </tbody>

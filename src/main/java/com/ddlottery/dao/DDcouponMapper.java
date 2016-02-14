@@ -2,6 +2,9 @@ package com.ddlottery.dao;
 
 import com.ddlottery.model.DDcoupon;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public interface DDcouponMapper {
     int deleteByPrimaryKey(Integer cid);
 
@@ -14,4 +17,7 @@ public interface DDcouponMapper {
     int updateByPrimaryKeySelective(DDcoupon record);
 
     int updateByPrimaryKey(DDcoupon record);
+
+    ArrayList<Map> selectByBid(Integer bid);
+
 }
