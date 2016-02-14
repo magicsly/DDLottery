@@ -20,6 +20,13 @@ public class couponController {
     @Autowired
     DDcouponService DDcouponService;
 
+    /****
+     * 领取优惠券
+     * @param uid
+     * @param cid
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/receivecoupon")
     @ResponseBody
     public Map receivecoupon(@CookieValue(value="uid",defaultValue = "",required=false) Integer uid,
@@ -31,6 +38,13 @@ public class couponController {
         return map;
     }
 
+    /****
+     * 核销优惠券
+     * @param code
+     * @param bid
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/usecoupon")
     @ResponseBody
     public Map usecoupon(@CookieValue(value="code",defaultValue = "",required=false) String code,
