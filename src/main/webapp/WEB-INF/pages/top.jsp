@@ -15,13 +15,17 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-            <li><a href=""><i class="fa fa-dashboard"></i>用户管理</a></li>
-            <li><a href=""><i class="fa fa-dashboard"></i>店铺管理</a></li>
+            <li><a href="user_list"><i class="fa fa-dashboard"></i> 用户管理</a></li>
+            <li><a href="business_list"><i class="fa fa-dashboard"></i> 店铺管理</a></li>
+            <li><a href="order_list"><i class="fa fa-dashboard"></i> 订单管理</a></li>
+            <li><a href="coupon_list"><i class="fa fa-dashboard"></i> 优惠券管理</a></li>
+            <li><a href="draw_list"><i class="fa fa-dashboard"></i> 提款管理</a></li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> 营销管理 <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> 系统管理 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="coupon_add">创建优惠券</a></li>
-                    <li><a href="#">优惠券管理</a></li>
+                    <li><a href="">系统用户</a></li>
+                    <li><a href="">统计</a></li>
+                    <li><a href="">退出</a></li>
                 </ul>
             </li>
         </ul>

@@ -47,7 +47,7 @@
             <value>com.mysql.jdbc.Driver</value>
         </property>
         <property name="url">
-            <value>jdbc:mysql://localhost:3306/DDLottery</value>
+            <value>jdbc:mysql://localhost:3306/DDLottery?useUnicode=true&amp;characterEncoding=UTF-8</value>
         </property>
         <property name="username">
             <value>root</value>

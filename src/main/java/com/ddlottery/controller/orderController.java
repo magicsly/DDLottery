@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,7 +70,7 @@ public class orderController {
         order.setContent(content);
         order.setIsprint((byte)0);
         order.setState(state);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date closedate = sdf.parse(closetime);
         order.setClosetime(closedate);
         Integer code = DDorderService.addorder(order);
@@ -125,41 +126,10 @@ public class orderController {
 
     @RequestMapping(value = "/orderinfo")
     @ResponseBody
-    public JSONObject orderinfo() {
-        String str = "{\n" +
-                "\"username\":\"少保罗成\",\n" +
-                "\"lottype\":\"01\",\n" +
-                "\"issue\":\"20160129\",\n" +
-                "\"proid\":\"16026SS74975\",\n" +
-                "\"addtime\":\"2016-01-29 10:55:00\",\n" +
-                "\"promoney\":\"60\",\n" +
-                "\"multiply\":\"2\",\n" +
-                "\"basemoney\":\"2\",\n" +
-                "\"state\":\"1\",\n" +
-                "\"issuc\":\"1\",\n" +
-                "\"buystop\":\"0\",\n" +
-                "\"code\":\"HH|SPF>160129002=3,RQSPF>160129003=2,SPF>160129004=0|2*1\",\n" +
-                "\"match\":\n" +
-                "   [{\"id\":\"160129002\",\n" +
-                "   \"oid\":\"周五002\",\n" +
-                "   \"home\":\"卡塔尔\",\n" +
-                "   \"visit\":\"伊拉克\",\n" +
-                "   \"point\":\"－1\",\n" +
-                "   },\n" +
-                "   {\"id\":\"160129003\",\n" +
-                "   \"oid\":\"周五003\",\n" +
-                "   \"home\":\"南锡\",\n" +
-                "   \"visit\":\"克莱蒙\",\n" +
-                "   \"point\":\"2\",\n" +
-                "   },\n" +
-                "   {\"id\":\"160129004\",\n" +
-                "   \"oid\":\"周五004\",\n" +
-                "   \"home\":\"伊维恩\",\n" +
-                "   \"visit\":\"梅斯\",\n" +
-                "   \"point\":\"－1\",\n" +
-                "   }]\n" +
-                "}";
-        return JSON.parseObject(str);
+    public Map orderinfo(@RequestParam(value="oid",defaultValue = "",required=false) Integer oid
+    ) throws IOException {
+        Map map = DDorderService.orderInfo(oid);
+        return map;
     }
 
 }

@@ -3,11 +3,13 @@
 <mapper namespace="com.ddlottery.dao.DDcouponMapper" >
   <resultMap id="BaseResultMap" type="com.ddlottery.model.DDcoupon" >
     <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="types" property="types" jdbcType="TINYINT" />
     <result column="money" property="money" jdbcType="REAL" />
     <result column="num" property="num" jdbcType="INTEGER" />
     <result column="restnum" property="restnum" jdbcType="INTEGER" />
-    <result column="bid" property="bid" jdbcType="VARCHAR" />
+    <result column="usenum" property="usenum" jdbcType="INTEGER" />
+    <result column="bid" property="bid" jdbcType="CHAR" />
     <result column="bname" property="bname" jdbcType="VARCHAR" />
     <result column="fullmuch" property="fullmuch" jdbcType="REAL" />
     <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
@@ -15,21 +17,50 @@
     <result column="limitnum" property="limitnum" jdbcType="INTEGER" />
     <result column="tips" property="tips" jdbcType="VARCHAR" />
     <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="states" property="states" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    cid, types, money, num, restnum, bid, bname, fullmuch, starttime, endtime, limitnum, 
-    tips, creattime
+    cid, title, types, money, num, restnum, usenum, bid, bname, fullmuch, starttime, 
+    endtime, limitnum, tips, creattime, states
   </sql>
-    <select id="selectByBid" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
+    <select id="selectFullmuchCount" resultType="lang.Integer" parameterType="com.ddlottery.model.DDcoupon" >
+      select count(0) from dd_coupon WHERE
+      bid = #{bid,jdbcType=INTEGER} AND fullmuch = #{fullmuch,jdbcType=REAL}
+      AND restnum>0 AND endtime > now()
+    </select>
+  <select id="selectByBid" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
         <![CDATA[
         select
-        cid, types, money, num, restnum, bid, bname, fullmuch, starttime, endtime, limitnum,
+        cid, title ,types, money, num, restnum, bid, bname, fullmuch, starttime, endtime, limitnum,
         tips
         from dd_coupon
-        where #{bid,jdbcType=INTEGER} = bid AND types = 1
-        AND starttime < now() and endtime > now()
+        where #{bid,jdbcType=INTEGER} = bid AND (types = 2 or types = 3)
+        AND endtime > now()
         AND restnum > 0
         ]]>
+    </select>
+    <select id="businessAll" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from dd_coupon
+        WHERE bid = #{bid,jdbcType=CHAR}
+        <if test="type == 1" >
+          AND restnum>0 AND endtime > now()
+        </if>
+        <if test="type == 2" >
+            AND restnum &lt; 1 AND endtime > now()
+        </if>
+        <if test="type == 3" >
+            AND endtime &lt; now()
+        </if>
+        ORDER BY cid DESC
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_coupon
+        ORDER BY cid DESC
     </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -42,22 +73,25 @@
     where cid = #{cid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ddlottery.model.DDcoupon" >
-    insert into dd_coupon (cid, types, money, 
-      num, restnum, bid, 
-      bname, fullmuch, starttime, 
+    insert into dd_coupon (cid, title, types, 
+      money, num, restnum, usenum, 
+      bid, bname, fullmuch, starttime, 
       endtime, limitnum, tips, 
-      creattime)
-    values (#{cid,jdbcType=INTEGER}, #{types,jdbcType=TINYINT}, #{money,jdbcType=REAL}, 
-      #{num,jdbcType=INTEGER}, #{restnum,jdbcType=INTEGER}, #{bid,jdbcType=VARCHAR},
-      #{bname,jdbcType=VARCHAR}, #{fullmuch,jdbcType=REAL}, #{starttime,jdbcType=TIMESTAMP}, 
+      creattime, states)
+    values (#{cid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{types,jdbcType=TINYINT}, 
+      #{money,jdbcType=REAL}, #{num,jdbcType=INTEGER}, #{restnum,jdbcType=INTEGER}, #{usenum,jdbcType=INTEGER}, 
+      #{bid,jdbcType=CHAR}, #{bname,jdbcType=VARCHAR}, #{fullmuch,jdbcType=REAL}, #{starttime,jdbcType=TIMESTAMP}, 
       #{endtime,jdbcType=TIMESTAMP}, #{limitnum,jdbcType=INTEGER}, #{tips,jdbcType=VARCHAR}, 
-      #{creattime,jdbcType=TIMESTAMP})
+      #{creattime,jdbcType=TIMESTAMP}, #{states,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.ddlottery.model.DDcoupon" >
     insert into dd_coupon
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="cid != null" >
         cid,
+      </if>
+      <if test="title != null" >
+        title,
       </if>
       <if test="types != null" >
         types,
@@ -70,6 +104,9 @@
       </if>
       <if test="restnum != null" >
         restnum,
+      </if>
+      <if test="usenum != null" >
+        usenum,
       </if>
       <if test="bid != null" >
         bid,
@@ -95,10 +132,16 @@
       <if test="creattime != null" >
         creattime,
       </if>
+      <if test="states != null" >
+        states,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="cid != null" >
         #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
       </if>
       <if test="types != null" >
         #{types,jdbcType=TINYINT},
@@ -112,8 +155,11 @@
       <if test="restnum != null" >
         #{restnum,jdbcType=INTEGER},
       </if>
+      <if test="usenum != null" >
+        #{usenum,jdbcType=INTEGER},
+      </if>
       <if test="bid != null" >
-        #{bid,jdbcType=VARCHAR},
+        #{bid,jdbcType=CHAR},
       </if>
       <if test="bname != null" >
         #{bname,jdbcType=VARCHAR},
@@ -136,11 +182,17 @@
       <if test="creattime != null" >
         #{creattime,jdbcType=TIMESTAMP},
       </if>
+      <if test="states != null" >
+        #{states,jdbcType=TINYINT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.ddlottery.model.DDcoupon" >
     update dd_coupon
     <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
       <if test="types != null" >
         types = #{types,jdbcType=TINYINT},
       </if>
@@ -153,8 +205,11 @@
       <if test="restnum != null" >
         restnum = #{restnum,jdbcType=INTEGER},
       </if>
+      <if test="usenum != null" >
+        usenum = #{usenum,jdbcType=INTEGER},
+      </if>
       <if test="bid != null" >
-        bid = #{bid,jdbcType=VARCHAR},
+        bid = #{bid,jdbcType=CHAR},
       </if>
       <if test="bname != null" >
         bname = #{bname,jdbcType=VARCHAR},
@@ -177,23 +232,29 @@
       <if test="creattime != null" >
         creattime = #{creattime,jdbcType=TIMESTAMP},
       </if>
+      <if test="states != null" >
+        states = #{states,jdbcType=TINYINT},
+      </if>
     </set>
     where cid = #{cid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDcoupon" >
     update dd_coupon
-    set types = #{types,jdbcType=TINYINT},
+    set title = #{title,jdbcType=VARCHAR},
+      types = #{types,jdbcType=TINYINT},
       money = #{money,jdbcType=REAL},
       num = #{num,jdbcType=INTEGER},
       restnum = #{restnum,jdbcType=INTEGER},
-      bid = #{bid,jdbcType=VARCHAR},
+      usenum = #{usenum,jdbcType=INTEGER},
+      bid = #{bid,jdbcType=CHAR},
       bname = #{bname,jdbcType=VARCHAR},
       fullmuch = #{fullmuch,jdbcType=REAL},
       starttime = #{starttime,jdbcType=TIMESTAMP},
       endtime = #{endtime,jdbcType=TIMESTAMP},
       limitnum = #{limitnum,jdbcType=INTEGER},
       tips = #{tips,jdbcType=VARCHAR},
-      creattime = #{creattime,jdbcType=TIMESTAMP}
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      states = #{states,jdbcType=TINYINT}
     where cid = #{cid,jdbcType=INTEGER}
   </update>
 </mapper>

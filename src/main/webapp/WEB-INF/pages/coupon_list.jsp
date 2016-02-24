@@ -11,10 +11,8 @@
     <meta name="author" content="">
 
     <title>Dashboard - SB Admin</title>
-
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-
     <!-- Add custom CSS here -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -24,46 +22,44 @@
   </head>
 
   <body>
-
     <div id="wrapper">
         <%@ include file="top.jsp"%>
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h1 class="admin_title"><span>店铺管理</span><a class="btn btn-primary addnewsd" href="business_info">添加新店</a></h1>
-            <div class="form-group form_box">
-			    <label class="col-sm-2 control-label">按省份选择</label>
-			    <div class="col-sm-2">
-			     <select class="form-control">
-	                  <option>按省份选择</option>
+            <h1 class="admin_title"><span>优惠券</span><a class="btn btn-primary addnewsd" href="coupon_info">添加优惠券</a></h1>
+            <div class="col-lg-4">
+	            <div class="form-group ipt_box">
+	                <label>类型</label>
+	                <select class="form-control">
+	                  <option>1</option>
 	                  <option>2</option>
 	                  <option>3</option>
 	                  <option>4</option>
 	                  <option>5</option>
 	                </select>
-			    </div>
-			    <div class="col-sm-2">
-			     <select class="form-control">
-	                  <option>按省份选择</option>
+	            </div>
+            </div>
+            <div class="col-lg-4">
+	            <div class="form-group ipt_box">
+	                <label>状态</label>
+	                <select class="form-control">
+	                  <option>1</option>
 	                  <option>2</option>
 	                  <option>3</option>
 	                  <option>4</option>
 	                  <option>5</option>
 	                </select>
-			    </div>
-			    <div class="col-sm-1">
-			     <button type="button" class="btn btn-primary btn-sm">确定</button>
-			    </div>
-			    <div class="col-sm-1">
-			     或者
-			    </div>
-			    <div class="col-sm-2">
-			     <input class="form-control" placeholder="城市">
-			    </div>
-			    <div class="col-sm-1">
-			     <button type="button" class="btn btn-primary btn-sm">确定</button>
-			    </div>
-			  </div>
+	            </div>            	
+            </div>
+            <div class="col-lg-4">
+	            <div class="form-group input-group">
+	                <input type="text" class="form-control">
+	                <span class="input-group-btn">
+	                  <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+	                </span>
+	            </div>
+            </div>
           </div>
         </div><!-- /.row -->
 
@@ -73,34 +69,39 @@
 	              <table class="table table-bordered table-hover table-striped tablesorter">
 	                <thead>
 		                  <tr>
-                              <th class="header">ID<i class="fa fa-sort"></i></th>
-			                  <th class="header">彩店名称 <i class="fa fa-sort"></i></th>
-			                  <th class="header">店主姓名<i class="fa fa-sort"></i></th>
-			                  <th class="header">联系电话<i class="fa fa-sort"></i></th>
-			                  <th class="header">地址 <i class="fa fa-sort"></i></th>
-			                  <th class="header">入住时间 <i class="fa fa-sort"></i></th>
-			                  <th class="header">操作<i class="fa fa-sort"></i></th>
+			                  <th class="header">优惠券名称 <i class="fa fa-sort"></i></th>
+			                  <th class="header">优惠券ID<i class="fa fa-sort"></i></th>
+			                  <th class="header">创建时间<i class="fa fa-sort"></i></th>
+			                  <th class="header">有效时间 <i class="fa fa-sort"></i></th>
+			                  <th class="header">发行数 <i class="fa fa-sort"></i></th>
+			                  <th class="header">剩余数<i class="fa fa-sort"></i></th>
+			                  <th class="header">已使用<i class="fa fa-sort"></i></th>
+			                  <th class="header">状态 <i class="fa fa-sort"></i></th>
+						<th class="header">操作 <i class="fa fa-sort"></i></th>
 		                  </tr>
 	                </thead>
 	                <tbody>
-                    <c:forEach items="${businessList}" var="list">
+                    <c:forEach items="${couponList}" var="list">
 	                  <tr>
-                          <td><a href="business_info?act=info&bid=${list.bid}">${list.bid}</a></td>
-	                    <td><a href="business_info?act=info&bid=${list.bid}"> ${list.locname}</a></td>
-	                    <td>${list.realname}</td>
-	                    <td>${list.mobile}</td>
-	                    <td>${list.address}
-                            <a class="btn btn-success btn-xs">地图</a>
-                        </td>
+	                    <td><a href="">${list.title}</a></td>
+	                    <td>${list.cid}</td>
 	                    <td><fmt:formatDate value="${list.creattime}" pattern="YYYY-MM-dd"/></td>
-	                    <td class="xq_type">
-                            <a href="" >添加优惠券</a>
-                            <a href="business_info?act=info&bid=${list.bid}" >编辑</a>
+	                    <td><fmt:formatDate value="${list.starttime}" pattern="YYYY-MM-dd"/>至<fmt:formatDate value="${list.endtime}" pattern="YYYY-MM-dd"/></td>
+	                    <td>${list.num}</td>
+	                    <td>${list.restnum}</td>
+	                    <td>${list.usenum}</td>
+	                    <td>
+                            <c:if test="${list.states == 0}">
+                                <span class="btn btn-success btn-xs">正常</span>
+                            </c:if>
+                            <c:if test="${list.states == 1}">
+                                <span class="btn btn-danger btn-xs">关闭</span>
+                            </c:if>
                         </td>
+	                    <td class="xq_type"><a href="" >编辑</a><em>|</em><a href="coupon_info_list?cid=${list.cid}">明细</a><em>|</em><a href="">作废</a></td>
 	                  </tr>
                     </c:forEach>
-	                </tbody>
-                      <tr>
+	                  <tr>
                           <td colspan="9" class="page_box">
                               <span class="listtable_all">共有${count}条，第${page}页</span>
                               <ul class="pagination">
@@ -110,7 +111,8 @@
                                   <li><a href="?page=${count%20+1}">末页</a></li>
                               </ul>
                           </td>
-                      </tr>
+	                  </tr>
+	                </tbody>
 	              </table>
 	            </div>
         	</div>
@@ -127,7 +129,7 @@
     <!-- JavaScript -->
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
-    <script src="js/raphael-min.js"></script>
+    <!-- Page Specific Plugins -->    <script src="js/raphael-min.js"></script>
     <script src="js/morris-0.4.3.min.js"></script>
     <script src="js/morris/chart-data-morris.js"></script>
     <script src="js/tablesorter/jquery.tablesorter.js"></script>

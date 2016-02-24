@@ -17,12 +17,14 @@
     <result column="bankname" property="bankname" jdbcType="VARCHAR" />
     <result column="bankcode" property="bankcode" jdbcType="VARCHAR" />
     <result column="saletime" property="saletime" jdbcType="VARCHAR" />
+      <result column="salelot" property="salelot" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="TINYINT" />
     <result column="cardimg" property="cardimg" jdbcType="CHAR" />
     <result column="saleimg" property="saleimg" jdbcType="CHAR" />
     <result column="businessimg" property="businessimg" jdbcType="CHAR" />
     <result column="salecard" property="salecard" jdbcType="CHAR" />
     <result column="money" property="money" jdbcType="REAL" />
+     <result column="outmoney" property="outmoney" jdbcType="REAL" />
     <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
     <result column="logintime" property="logintime" jdbcType="TIMESTAMP" />
     <result column="ip" property="ip" jdbcType="CHAR" />
@@ -38,25 +40,33 @@
         <result column="bname" property="bname" jdbcType="VARCHAR" />
         <result column="mobile" property="mobile" jdbcType="CHAR" />
         <result column="saletime" property="saletime" jdbcType="VARCHAR" />
+        <result column="slaelot" property="slaelot" jdbcType="VARCHAR" />
         <result column="type" property="type" jdbcType="TINYINT" />
         <result column="state" property="state" jdbcType="TINYINT" />
         <collection ofType="java.util.Map" property="coupon" javaType="ArrayList" select="com.ddlottery.dao.DDcouponMapper.selectByBid" column="bid"/>
     </resultMap>
   <sql id="Base_Column_List" >
-    bid, pwd, bimage,locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
-    bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime, 
-    logintime, ip, state
+    bid, pwd, bimage, area, city, locname, address, salelot, cox, coy, bname, realname, 
+    idcard, mobile, bank, bankname, bankcode, saletime, type, cardimg, saleimg, businessimg, 
+    salecard, money, outmoney, creattime, logintime, ip, state
   </sql>
+    <update id="editPwd" parameterType="com.ddlottery.model.DDbusiness" >
+        update dd_business
+        set
+        pwd = #{pwd,jdbcType=CHAR}
+        where mobile = #{mobile,jdbcType=CHAR}
+    </update>
     <select id="nearBusiness" resultMap="businessMap" parameterType="com.ddlottery.model.DDbusiness">
         select
-        bid, bimage, locname, address, cox, coy, bname, mobile, saletime, type, state,
+        bid, bimage, locname, address, cox, coy, bname, mobile, saletime, salelot, type, state,
         (POWER(MOD(ABS(cox-#{cox,jdbcType=REAL}),360),2) + POWER(ABS(coy-#{coy,jdbcType=REAL}),2)) AS distance
         from dd_business
+        ORDER BY  distance
     </select>
   <select id="selectBusiness" resultMap="BaseResultMap">
         select
         bid, bimage, locname, address, cox, coy, bname, realname, idcard, mobile, bank, bankname,
-        bankcode, saletime, type, cardimg, saleimg, businessimg, salecard, money, creattime,
+        bankcode, saletime, salelot ,type, cardimg, saleimg, businessimg, salecard, money, outmoney,creattime,
         logintime, ip, state
         from dd_business
     </select>
@@ -64,10 +74,10 @@
         select
         <include refid="Base_Column_List" />
         from dd_business
-        where mobile = #{bid,jdbcType=VARCHAR}
+        where mobile = #{mobile,jdbcType=VARCHAR}
     </select>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+ <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from dd_business
@@ -78,22 +88,26 @@
     where bid = #{bid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.ddlottery.model.DDbusiness" >
-    insert into dd_business (bid, pwd, bimage, locname,
-      address, cox, coy, bname, 
+    insert into dd_business (bid, pwd, bimage, area, 
+      city, locname, address, 
+      salelot, cox, coy, bname, 
       realname, idcard, mobile, 
       bank, bankname, bankcode, 
       saletime, type, cardimg, 
       saleimg, businessimg, salecard, 
-      money, creattime, logintime, 
-      ip, state)
-    values (#{bid,jdbcType=INTEGER}, #{pwd,jdbcType=CHAR}, #{bimage,jdbcType=VARCHAR}, #{locname,jdbcType=VARCHAR},
-      #{address,jdbcType=VARCHAR}, #{cox,jdbcType=REAL}, #{coy,jdbcType=REAL}, #{bname,jdbcType=VARCHAR}, 
+      money, outmoney, creattime, 
+      logintime, ip, state
+      )
+    values (#{bid,jdbcType=INTEGER}, #{pwd,jdbcType=CHAR}, #{bimage,jdbcType=CHAR}, #{area,jdbcType=TINYINT}, 
+      #{city,jdbcType=TINYINT}, #{locname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{salelot,jdbcType=VARCHAR}, #{cox,jdbcType=REAL}, #{coy,jdbcType=REAL}, #{bname,jdbcType=VARCHAR}, 
       #{realname,jdbcType=VARCHAR}, #{idcard,jdbcType=CHAR}, #{mobile,jdbcType=CHAR}, 
       #{bank,jdbcType=VARCHAR}, #{bankname,jdbcType=VARCHAR}, #{bankcode,jdbcType=VARCHAR}, 
       #{saletime,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{cardimg,jdbcType=CHAR}, 
       #{saleimg,jdbcType=CHAR}, #{businessimg,jdbcType=CHAR}, #{salecard,jdbcType=CHAR}, 
-      #{money,jdbcType=REAL}, #{creattime,jdbcType=TIMESTAMP}, #{logintime,jdbcType=TIMESTAMP}, 
-      #{ip,jdbcType=CHAR}, #{state,jdbcType=TINYINT})
+      #{money,jdbcType=REAL}, #{outmoney,jdbcType=REAL}, #{creattime,jdbcType=TIMESTAMP}, 
+      #{logintime,jdbcType=TIMESTAMP}, #{ip,jdbcType=CHAR}, #{state,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ddlottery.model.DDbusiness" >
     insert into dd_business
@@ -104,14 +118,23 @@
       <if test="pwd != null" >
         pwd,
       </if>
-        <if test="bimage != null" >
-            bimage,
-        </if>
+      <if test="bimage != null" >
+        bimage,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
       <if test="locname != null" >
         locname,
       </if>
       <if test="address != null" >
         address,
+      </if>
+      <if test="salelot != null" >
+        salelot,
       </if>
       <if test="cox != null" >
         cox,
@@ -161,6 +184,9 @@
       <if test="money != null" >
         money,
       </if>
+      <if test="outmoney != null" >
+        outmoney,
+      </if>
       <if test="creattime != null" >
         creattime,
       </if>
@@ -181,14 +207,23 @@
       <if test="pwd != null" >
         #{pwd,jdbcType=CHAR},
       </if>
-        <if test="bimage != null" >
-            #{bimage,jdbcType=CHAR},
-        </if>
+      <if test="bimage != null" >
+        #{bimage,jdbcType=CHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=TINYINT},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=TINYINT},
+      </if>
       <if test="locname != null" >
         #{locname,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="salelot != null" >
+        #{salelot,jdbcType=VARCHAR},
       </if>
       <if test="cox != null" >
         #{cox,jdbcType=REAL},
@@ -238,6 +273,9 @@
       <if test="money != null" >
         #{money,jdbcType=REAL},
       </if>
+      <if test="outmoney != null" >
+        #{outmoney,jdbcType=REAL},
+      </if>
       <if test="creattime != null" >
         #{creattime,jdbcType=TIMESTAMP},
       </if>
@@ -258,14 +296,23 @@
       <if test="pwd != null" >
         pwd = #{pwd,jdbcType=CHAR},
       </if>
-        <if test="bimage != null" >
-            bimage = #{bimage,jdbcType=VARCHAR},
-        </if>
+      <if test="bimage != null" >
+        bimage = #{bimage,jdbcType=CHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=TINYINT},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=TINYINT},
+      </if>
       <if test="locname != null" >
         locname = #{locname,jdbcType=VARCHAR},
       </if>
       <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="salelot != null" >
+        salelot = #{salelot,jdbcType=VARCHAR},
       </if>
       <if test="cox != null" >
         cox = #{cox,jdbcType=REAL},
@@ -315,6 +362,9 @@
       <if test="money != null" >
         money = #{money,jdbcType=REAL},
       </if>
+      <if test="outmoney != null" >
+        outmoney = #{outmoney,jdbcType=REAL},
+      </if>
       <if test="creattime != null" >
         creattime = #{creattime,jdbcType=TIMESTAMP},
       </if>
@@ -333,9 +383,12 @@
   <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDbusiness" >
     update dd_business
     set pwd = #{pwd,jdbcType=CHAR},
-     bimage = #{bimage,jdbcType=VARCHAR},
+      bimage = #{bimage,jdbcType=CHAR},
+      area = #{area,jdbcType=TINYINT},
+      city = #{city,jdbcType=TINYINT},
       locname = #{locname,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
+      salelot = #{salelot,jdbcType=VARCHAR},
       cox = #{cox,jdbcType=REAL},
       coy = #{coy,jdbcType=REAL},
       bname = #{bname,jdbcType=VARCHAR},
@@ -352,6 +405,7 @@
       businessimg = #{businessimg,jdbcType=CHAR},
       salecard = #{salecard,jdbcType=CHAR},
       money = #{money,jdbcType=REAL},
+      outmoney = #{outmoney,jdbcType=REAL},
       creattime = #{creattime,jdbcType=TIMESTAMP},
       logintime = #{logintime,jdbcType=TIMESTAMP},
       ip = #{ip,jdbcType=CHAR},

@@ -9,6 +9,10 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -21,18 +25,22 @@ public class DDbusinessService {
 
     public String md5key = "123456";
     public static final Integer pageSize = 20;
+    public static final String SESSION_BID = "bid";
+    public static final String SESSION_BMOBILE = "bmobile";
+    public static final String Bkey = "1234567";
 
     public Integer addBusiness(DDbusiness business){
         String md5pw = DigestUtils.md5Hex(business.getPwd());
         business.setPwd(md5pw);
         business.setMoney((float) 0);
+        business.setOutmoney((float) 0);
         business.setCreattime(new Date());
         business.setState((byte)0);
         DDbusinessMapper.insertSelective(business);
         return 0;
     }
 
-    public Map nearBusiness(Float cox, Float coy,Integer page){
+    public Map nearBusiness(BigDecimal cox, BigDecimal coy,Integer page){
         Map<String, Object> map = new HashMap<String, Object>();
         DDbusiness business = new DDbusiness();
         business.setCox(cox);
@@ -61,6 +69,29 @@ public class DDbusinessService {
         }
     }
 
+    public Integer businessLogin (String mobile , String pwd, HttpServletRequest request,HttpServletResponse response){
+
+        DDbusiness business = DDbusinessMapper.selectByMobile(mobile);
+        if(business == null){
+            return -1;
+        }
+        String md5pwd = DigestUtils.md5Hex(pwd);
+        if(business.getPwd().equals(md5pwd)){
+            request.getSession().setAttribute(SESSION_BID,business.getBid());
+            request.getSession().setAttribute(SESSION_BMOBILE,business.getMobile());
+            Cookie cookie = new Cookie("Bid", business.getBid().toString());
+            Cookie cookie2 = new Cookie("Bkey", DigestUtils.md5Hex(business.getBid().toString()+Bkey));
+            response.addCookie(cookie);
+            response.addCookie(cookie2);
+            return business.getBid();
+        }else {
+            return -1;
+        }
+    }
+
+    public DDbusiness businessInfo(Integer bid){
+        return DDbusinessMapper.selectByPrimaryKey(bid);
+    }
 
     public Map business_list(Integer page){
         Map<String, Object> map = new HashMap<String, Object>();
@@ -78,6 +109,25 @@ public class DDbusinessService {
     public String getMd5key(String mobile){
         DDbusiness business = DDbusinessMapper.selectByMobile(mobile);
         return  DigestUtils.md5Hex(business.getMobile()+business.getPwd()+md5key);
+    }
+
+    public Integer searchPwd(DDbusiness business){
+        String md5pw =DigestUtils.md5Hex(business.getPwd());
+        business.setPwd(md5pw);
+        DDbusinessMapper.editPwd(business);
+        return 0;
+    }
+
+    public Integer businessType(Integer bid , byte state){
+        DDbusiness business = DDbusinessMapper.selectByPrimaryKey(bid);
+        if(business.getState()==2){
+            return 1;
+        }else {
+            business.setState(state);
+            DDbusinessMapper.updateByPrimaryKeySelective(business);
+            return 0;
+        }
+
     }
 }
 

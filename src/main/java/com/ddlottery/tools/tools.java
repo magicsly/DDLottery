@@ -22,8 +22,19 @@ import java.util.*;
 public class tools {
 
     public void PostSms(String mobile,String msg) throws IOException {
-        String url = "http://user.cpdyj.com/user/insertSMS.go?type=printorder&mobile="+mobile+"&code="+msg;
-        Document doc = Jsoup.connect(url).get();
+//        String url = "http://user.cpdyj.com/user/insertSMS.go?type=printorder&mobile="+mobile+"&code="+msg;
+//        Document doc = Jsoup.connect(url).get();
+
+        SendSMS ss = new SendSMS();
+        ss.setUsername("554148");
+        ss.setPassword("e10adc3949ba59abbe56e057f20f883e");
+        ss.setMessage(msg);
+        ss.setMobiles(mobile);
+        ss.setServicesRequestAddRess("http://sms.c8686.com/Api/BayouSmsApiEx.aspx");
+        ss.setSmstype(0);
+        ss.setTimerid("0");
+        ss.setTimertype(0);
+        Map<String, String> map = ss.sendSMS();
     }
 
     public List getMatch(String matchId) throws IOException {

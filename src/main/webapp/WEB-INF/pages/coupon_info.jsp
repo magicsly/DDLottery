@@ -1,4 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,9 +34,15 @@
               </ul>
               <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade active in" id="home">
-                    <form class="form-horizontal" action="/coupon_add" method="post">
+                    <form class="form-horizontal" action="coupon_info" method="post">
                         <input type="hidden" name="act" value="add">
                         <input type="hidden" name="types" value="1">
+                        <div class="form-group">
+                            <label for="money" class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="title" name="title">
+                            </div>
+                        </div>
 					  <div class="form-group">
 					    <label for="money" class="col-sm-2 control-label">面值</label>
 					    <div class="col-sm-5">
@@ -76,9 +85,15 @@
                 </div>
 
                 <div class="tab-pane fade" id="profile">
-                    <form class="form-horizontal" action="/coupon_add" method="post">
+                    <form class="form-horizontal" action="coupon_info" method="post">
                         <input type="hidden" name="act" value="add">
-                        <input type="hidden" name="types" value="1">
+                        <input type="hidden" name="types" value="2">
+                        <div class="form-group">
+                            <label for="money" class="col-sm-2 control-label">名称</label>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" id="title2" name="title">
+                            </div>
+                        </div>
 					  <div class="form-group">
 					    <label for="money2" class="col-sm-2 control-label">面值</label>
 					    <div class="col-sm-5">
@@ -101,47 +116,46 @@
 					    <label for="bid" class="col-sm-2 control-label">选择门店</label>
 					    <div class="col-sm-5">
 					      <select class="form-control" name="bid" id="bid">
-				                  <option value=1>选择门店</option>
-				                  <option value=2>2</option>
-				                  <option value=3>3</option>
-				                  <option value=4>4</option>
-				                  <option value=5>5</option>
-				            </select>
+                                <option value="all">所有门店</option>
+                                <c:forEach items="${business}" var="list">
+				                  <option value=${list.bid}>${list.locname}</option>
+                                </c:forEach>
+                          </select>
 					    </div>
 					  </div>
 					  <div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">使用条件</label>
+					    <label for="fullmuch" class="col-sm-2 control-label">使用条件</label>
 					    <div class="col-sm-5">
 					      <div class="col-sm-2 pd linet">单笔订单满</div>
 						<div class="col-sm-2 pd">
-							<input type="email" class="form-control" id="inputEmail3" placeholder="">
+							<input type="text" class="form-control" id="fullmuch" name="fullmuch">
 						</div>
 					      <div class="col-sm-3 linet">元可使用此券</div>
 					    </div>
 					  </div>
 					  <div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">活动时间</label>
+					    <label for="starttime" class="col-sm-2 control-label">活动时间</label>
 					    <div class="col-sm-5">
 						<div class="col-sm-5 pd">
-						<input type="email" class="form-control" id="inputEmail3" placeholder="">
+						<input type="text" class="form-control" id="starttime2" name="page_starttime">
 						</div>
-						<div class="col-sm-2 linet" style="text-align: center;">至</div><div class="col-sm-5 pd"><input type="email" class="form-control" id="inputEmail3" placeholder=""></div>
+						<div class="col-sm-2 linet" style="text-align: center;">至</div><div class="col-sm-5 pd"><input type="text" class="form-control" id="endtime2" name="page_endtime"></div>
 					    </div>
 					    <div class="col-sm-1">
 					      <div  class="linet">张</div>
 					    </div>
 					  </div>
 					<div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">每人限领</label>
+					    <label for="limitnum" class="col-sm-2 control-label">每人限领</label>
 					    <div class="col-sm-5">
-					      <select class="form-control">
-				                  <option>1</option>
-				                  <option>2</option>
-				                  <option>3</option>
-				                  <option>4</option>
-				                  <option>5</option>
+					      <select class="form-control" id="limitnum" name="limitnum">
+                              <option value=-1>无限制</option>
+                              <option value=1>1</option>
+                              <option value=2>2</option>
+                              <option value=3>3</option>
+                              <option value=4>4</option>
+                              <option value=5>5</option>
 				            </select>
-
 					    </div>
 					    <div class="col-sm-1">
 					      <div class="linet">张</div>

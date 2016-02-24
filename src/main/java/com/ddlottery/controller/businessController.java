@@ -5,12 +5,16 @@ import com.ddlottery.service.DDbusinessService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +23,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/")
-public class businessController {
+public class businessController extends baseController{
     @Autowired
     DDbusinessService DDbusinessService;
 
@@ -34,8 +38,8 @@ public class businessController {
                            @RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
                            @RequestParam(value="bimage",defaultValue = "",required=false) String bimage,
                            @RequestParam(value="address",defaultValue = "",required=false) String address,
-                           @RequestParam(value="cox",defaultValue = "0",required=false) Float cox,
-                           @RequestParam(value="coy",defaultValue = "0",required=false) Float coy,
+                           @RequestParam(value="cox",defaultValue = "0",required=false) BigDecimal cox,
+                           @RequestParam(value="coy",defaultValue = "0",required=false) BigDecimal coy,
                            @RequestParam(value="bname",defaultValue = "",required=false) String bname,
                            @RequestParam(value="realname",defaultValue = "",required=false) String realname,
                            @RequestParam(value="idcard",defaultValue = "",required=false) String idcard,
@@ -78,10 +82,38 @@ public class businessController {
         return map;
     }
 
+    @RequestMapping(value = "/businesslogin")
+    @ResponseBody
+    public Map businesslogin(@RequestParam(value="mobile",defaultValue = "",required=false) String mobile,
+                         @RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
+                         HttpServletRequest request,HttpServletResponse response
+    ){
+        Integer bid = DDbusinessService.businessLogin(mobile,pwd,request,response);
+        Map<String,Object> map = new HashMap<String, Object>();
+        if(bid>0) {
+            map.put("code", 0);
+            map.put("bid", bid);
+        }else {
+            map.put("code", -1);
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "/businessinfo")
+    @ResponseBody
+    public Map userinfo(@CookieValue(value="Bid",defaultValue = "",required=false) Integer bid
+    ) {
+
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",0);
+        map.put("info",DDbusinessService.businessInfo(bid));
+        return map;
+    }
+
     @RequestMapping(value = "/nearbusiness")
     @ResponseBody
-    public Map nearbusiness(@RequestParam(value="cox",defaultValue = "0",required=false) Float cox,
-                            @RequestParam(value="coy",defaultValue = "0",required=false) Float coy,
+    public Map nearbusiness(@RequestParam(value="cox",defaultValue = "0",required=false) BigDecimal cox,
+                            @RequestParam(value="coy",defaultValue = "0",required=false) BigDecimal coy,
                             @RequestParam(value="page",defaultValue = "1",required=false) Integer page
     ){
         Map<String,Object> map = new HashMap<String, Object>();
@@ -97,4 +129,27 @@ public class businessController {
         return map;
     }
 
+    @RequestMapping(value = "businessClose")
+    @ResponseBody
+    public Map business_List(@CookieValue(value="Bid",defaultValue = "",required=false) Integer bid,
+                             @RequestParam(value="state",defaultValue = "0",required=false) Byte state){
+        Map<String,Object> map = new HashMap<String, Object>();
+        Integer code = DDbusinessService.businessType(bid,state);
+        map.put("code",code);
+        return map;
+    }
+
+    @RequestMapping(value = "/businesspwd")
+    @ResponseBody
+    public Map businesspwd(@RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
+                         @RequestParam(value="mobile",defaultValue = "",required=false) String mobile
+    ) {
+        DDbusiness business = new DDbusiness();
+        business.setPwd(pwd);
+        business.setMobile(mobile);
+        Map<String,Object> map = new HashMap<String, Object>();
+        Integer code = DDbusinessService.searchPwd(business);
+        map.put("code",code);
+        return map;
+    }
 }

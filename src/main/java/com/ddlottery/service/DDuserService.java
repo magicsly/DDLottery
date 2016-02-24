@@ -1,5 +1,7 @@
 package com.ddlottery.service;
 
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
+import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,6 +30,7 @@ public class DDuserService {
     public static final String SESSION_UID = "uid";
     public static final String SESSION_MOBILE = "mobile";
     public static final String key = "1234567";
+    public static final Integer pageSize = 20;
 
     @Autowired
     DDuserMapper DDuserMapper;
@@ -51,7 +56,7 @@ public class DDuserService {
         return 0;
     }
 
-    public Integer RegUser(DDuser user,String code){
+    public Integer RegUser(DDuser user,String code,HttpServletRequest request,HttpServletResponse response){
         DDregcode regcode = new DDregcode();
         regcode.setMobile(user.getMobile());
         regcode.setIp(user.getIp());
@@ -71,6 +76,7 @@ public class DDuserService {
             regcode.setUsetime(new Date());
             regcode.setIsuse((byte)1);
             DDregcodeMapper.updateCode(regcode);
+            login(user,request,response);
             return 0;
         }else{
             return userConf;
@@ -193,6 +199,19 @@ public class DDuserService {
             DDregcodeMapper.updateCode(regcode);
             return 0;
         }
+    }
+
+    public Map userList(Integer page){
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageBounds pageBounds = new PageBounds(page,pageSize);
+        ArrayList list = DDuserMapper.selectAll(pageBounds);
+        PageList pageList = (PageList)list;
+        map.put("code",0);
+        map.put("list",list);
+        map.put("count",pageList.getPaginator().getTotalCount());
+        map.put("pagesize",pageSize);
+        map.put("page",page);
+        return map;
     }
 
 }

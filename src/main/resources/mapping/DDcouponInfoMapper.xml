@@ -21,18 +21,84 @@
     id, cid, codenum, uid, uname, gettime, bid, bname, bmobile, money, starttime, endtime, 
     usetime, isuse
   </sql>
+    <select id="selectCountByCid" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+        select
+        COUNT(0)
+        from dd_coupon_info
+        where cid =  #{cid,jdbcType=INTEGER} AND uid=#{uid,jdbcType=INTEGER}
+    </select>
+    <select id="useCouponByBid" resultType="java.util.HashMap" parameterType="com.ddlottery.model.DDcouponInfo" >
+        select
+        dci.id as id, dci.cid as cid, codenum, dci.uid as uid, dci.uname as uname, dci.gettime as getime, dci.bid as bid,
+        dci.bname as bname, dci.bmobile as bmobile, dci.money as money, dci.starttime as starttime, dci.endtime as endtime,
+        usetime, isuse,
+        dc.title AS title
+        from dd_coupon_info AS dci
+        LEFT JOIN dd_coupon AS dc
+        ON dci.cid = dc.cid
+        where dci.bid =  #{bid,jdbcType=INTEGER}
+        <if test="codenum != null" >
+            AND codenum = #{codenum,jdbcType=CHAR}
+        </if>
+        ORDER BY dci.id DESC
+    </select>
+    <select id="selectInfo" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
+        SELECT dci.id as id ,codenum , dci.starttime as starttime,dci.endtime as endtime,usetime, isuse,
+        tips,limitnum,title,fullmuch,dc.money as money,db.bid as bid,locname,address,now() as nowtime
+        FROM dd_coupon_info AS dci
+        LEFT JOIN dd_coupon AS dc ON dci.cid = dc.cid
+        LEFT JOIN dd_business AS db ON dc.bid = db.bid
+        WHERE dci.id = #{id,jdbcType=INTEGER}
+        ORDER BY dci.id DESC
+    </select>
+
+    <select id="couponByCode" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
+        SELECT dci.id as id ,codenum , dci.starttime as starttime,dci.endtime as endtime,usetime, isuse,
+        tips,limitnum,title,fullmuch,dc.money as money,db.bid as bid,locname,address,now() as nowtime
+        FROM dd_coupon_info AS dci
+        LEFT JOIN dd_coupon AS dc ON dci.cid = dc.cid
+        LEFT JOIN dd_business AS db ON dc.bid = db.bid
+        WHERE dci.codenum = #{codenum,jdbcType=CHAR}
+        ORDER BY dci.id DESC
+    </select>
+
+    <select id="selectByCid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_coupon_info
+        where cid =  #{cid,jdbcType=INTEGER}
+    </select>
     <select id="selectByCodenum" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select
         <include refid="Base_Column_List" />
         from dd_coupon_info
-        where codenum =  #{codenum,jdbcType=CHAR},
+        where codenum =  #{codenum,jdbcType=CHAR}
     </select>
-
-    <select id="selectByUid" resultType="java.util.HashMap" parameterType="java.lang.String" >
+    <select id="selectByUidNow" resultType="java.util.HashMap" parameterType="java.lang.String" >
         select
-        <include refid="Base_Column_List" />
-        from dd_coupon_info
-        where uid =  #{uid,jdbcType=INTEGER}
+        dci.id as id, dci.cid as cid, codenum, dci.uid as uid, dci.uname as uname, dci.gettime as getime, dci.bid as bid,
+        dci.bname as bname, dci.bmobile as bmobile, dci.money as money, dci.starttime as starttime, dci.endtime as endtime,
+        usetime, isuse,
+        dc.title AS title
+        from dd_coupon_info AS dci
+        LEFT JOIN dd_coupon AS dc
+        ON dci.cid = dc.cid
+        where dci.uid =  #{uid,jdbcType=INTEGER}
+        AND dci.endtime > now() AND dci.isuse = 0
+        ORDER BY dci.id DESC
+    </select>
+    <select id="selectByUidAfter" resultType="java.util.HashMap" parameterType="java.lang.String" >
+        select
+        dci.id as id, dci.cid as cid, codenum, dci.uid as uid, dci.uname as uname, dci.gettime as getime, dci.bid as bid,
+        dci.bname as bname, dci.bmobile as bmobile, dci.money as money, dci.starttime as starttime, dci.endtime as endtime,
+        usetime, isuse,
+        dc.title AS title
+        from dd_coupon_info AS dci
+        LEFT JOIN dd_coupon AS dc
+        ON dci.cid = dc.cid
+        where dci.uid =  #{uid,jdbcType=INTEGER}
+        AND (dci.endtime &lt; now() or dci.isuse = 1)
+        ORDER BY dci.id DESC
     </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -57,7 +123,7 @@
       #{money,jdbcType=REAL}, #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
       #{usetime,jdbcType=TIMESTAMP}, #{isuse,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.ddlottery.model.DDcouponInfo" >
+  <insert id="insertSelective" parameterType="com.ddlottery.model.DDcouponInfo" keyProperty="id" useGeneratedKeys="true">
     insert into dd_coupon_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

@@ -22,7 +22,9 @@
         pwd = #{pwd,jdbcType=CHAR}
         where mobile = #{mobile,jdbcType=CHAR}
     </update>
-
+    <select id="selectAll" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List" /> FROM dd_user
+    </select>
     <select id="isuser" resultType="int" parameterType="java.lang.String">
         SELECT COUNT(0) FROM dd_user where mobile=#{mobile,jdbcType=CHAR}
     </select>

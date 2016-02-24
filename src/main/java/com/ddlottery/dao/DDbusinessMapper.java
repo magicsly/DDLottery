@@ -25,4 +25,6 @@ public interface DDbusinessMapper {
 
     ArrayList<Map> nearBusiness(DDbusiness record,PageBounds pageBounds);
 
+    int editPwd(DDbusiness record);
+
 }

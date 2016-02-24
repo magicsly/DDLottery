@@ -3,7 +3,7 @@ package com.ddlottery.service;
 import com.ddlottery.model.DDbusiness;
 import com.ddlottery.model.DDorder;
 import com.ddlottery.dao.DDorderMapper;
-
+import com.ddlottery.tools.tools;
 import com.github.miemiedev.mybatis.paginator.domain.Order;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -28,6 +29,7 @@ public class DDorderService {
 
     @Autowired
     DDbusinessService DDbusinessService;
+
 
     public Integer addorder(DDorder order){
         order.setCreattime(new Date());
@@ -56,12 +58,15 @@ public class DDorderService {
         return 0;
     }
 
-    public Map orderInfo(Integer oid){
+    public Map orderInfo(Integer oid) throws IOException {
         Map<String,Object> map = new HashMap<String, Object>();
         DDorder order = DDorderMapper.selectByPrimaryKey(oid);
+        String matchs = order.getContent();
+        tools tools = new tools();
+        List matchList = tools.getMatch(matchs);
         map.put("code",0);
         map.put("info",order);
-        map.put("match","");
+        map.put("match",matchList);
         return map;
     }
 
@@ -72,7 +77,7 @@ public class DDorderService {
             DDorderMapper.machUpdateList(bid);
             ArrayList<DDorder> list = DDorderMapper.machOrderList(bid);
             for (DDorder info : list) {
-                String chuan = info.getStr().split("|")[info.getStr().split("|").length];
+                String chuan = info.getStr().split("\\|")[info.getStr().split("\\|").length-1];
                 String str=getPrintLotCode(info.getStr(),info.getClosetime().toString(),chuan);
                 info.setStr(str);
             }
@@ -103,26 +108,28 @@ public class DDorderService {
     public String getPrintLotCode(
             String betStr,
             String closetime,
-            String chuan) throws Exception {
-        Bet bet = new Bet(betStr);
-        String str = SlipJCZQ.parse(bet);
+            String chuan) {
+        try {
+            Bet bet = new Bet(betStr);
+            String str = SlipJCZQ.parse(bet);
 
-        OmrText t = new OmrText();
+            OmrText t = new OmrText();
 
-        t.appendH1Centerln("彩票投注单");
-        //t.appendCenterln("用户名:足球爱好者");
-        t.appendCenterln("竞彩足球混合过关  "+chuan);
-        t.appendCenterln(UUID.randomUUID().toString());
-
-        t.appendLineln();
-        t.appendHex(str);
-        t.appendLineln();
-        t.appendCenterln("投注单过期时间:"+closetime);
-        t.appendCenterln("购彩有风险 投注需谨慎");
-        t.appendH1Centerln("请务必核对票面内容！");
-        t.appendFeed();
-        t.appendCut();
-
-        return t.toString();
+            t.appendH1Centerln("彩票投注单");
+            //t.appendCenterln("用户名:足球爱好者");
+            t.appendCenterln("竞彩足球混合过关  "+chuan);
+            t.appendCenterln(UUID.randomUUID().toString());
+            t.appendLineln();
+            t.appendHex(str);
+            t.appendLineln();
+            t.appendCenterln("投注单过期时间:"+closetime);
+            t.appendCenterln("购彩有风险 投注需谨慎");
+            t.appendH1Centerln("请务必核对票面内容！");
+            t.appendFeed();
+            t.appendCut();
+            return t.toString();
+        }catch (Exception e){
+            return "";
+        }
     }
 }

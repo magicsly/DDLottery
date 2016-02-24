@@ -42,7 +42,7 @@ public class uploadFiles {
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("code",0);
-        map.put("filenmae","/image/"+fileName+".jpg");
+        map.put("filename","/image/"+fileName+".jpg");
         map.put("normalfile","/image/"+fileName+"_normal.jpg");
         map.put("smallfile","/image/"+fileName+"_small.jpg");
         map.put("fname",fname);

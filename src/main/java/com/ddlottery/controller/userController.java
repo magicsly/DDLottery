@@ -52,12 +52,13 @@ public class userController extends baseController{
     @ResponseBody
     public Map regrist(@RequestParam(value="mobile",defaultValue = "",required=false) String mobile,
                        @RequestParam(value="pwd",defaultValue = "",required=false) String pwd,
-                       @RequestParam(value="code",defaultValue = "",required=false) String code
+                       @RequestParam(value="code",defaultValue = "",required=false) String code,
+                       HttpServletRequest request,HttpServletResponse response
     ) {
         DDuser user = new DDuser();
         user.setMobile(mobile);
         user.setPwd(pwd);
-        Integer regcode = DDuserService.RegUser(user,code);
+        Integer regcode = DDuserService.RegUser(user,code,request,response);
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("code", regcode);
         return map;

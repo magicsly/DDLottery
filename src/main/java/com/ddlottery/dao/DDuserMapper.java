@@ -1,7 +1,10 @@
 package com.ddlottery.dao;
 
 import com.ddlottery.model.DDuser;
+import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 
 @Repository
 public interface DDuserMapper {
@@ -24,4 +27,6 @@ public interface DDuserMapper {
     int isuser (String mobile);
 
     int editPwd(DDuser record);
+
+    ArrayList<DDuser> selectAll(PageBounds pageBounds);
 }

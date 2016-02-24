@@ -5,6 +5,8 @@ import java.util.Date;
 public class DDcoupon {
     private Integer cid;
 
+    private String title;
+
     private Byte types;
 
     private Float money;
@@ -12,6 +14,8 @@ public class DDcoupon {
     private Integer num;
 
     private Integer restnum;
+
+    private Integer usenum;
 
     private String bid;
 
@@ -29,12 +33,22 @@ public class DDcoupon {
 
     private Date creattime;
 
+    private Byte states;
+
     public Integer getCid() {
         return cid;
     }
 
     public void setCid(Integer cid) {
         this.cid = cid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     public Byte getTypes() {
@@ -69,12 +83,20 @@ public class DDcoupon {
         this.restnum = restnum;
     }
 
+    public Integer getUsenum() {
+        return usenum;
+    }
+
+    public void setUsenum(Integer usenum) {
+        this.usenum = usenum;
+    }
+
     public String getBid() {
         return bid;
     }
 
     public void setBid(String bid) {
-        this.bid = bid;
+        this.bid = bid == null ? null : bid.trim();
     }
 
     public String getBname() {
@@ -131,5 +153,13 @@ public class DDcoupon {
 
     public void setCreattime(Date creattime) {
         this.creattime = creattime;
+    }
+
+    public Byte getStates() {
+        return states;
+    }
+
+    public void setStates(Byte states) {
+        this.states = states;
     }
 }

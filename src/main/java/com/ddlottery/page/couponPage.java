@@ -6,6 +6,7 @@ import com.ddlottery.model.DDbusiness;
 import com.ddlottery.model.DDcoupon;
 import com.ddlottery.model.DDorder;
 import com.ddlottery.service.DDbusinessService;
+import com.ddlottery.service.DDcouponService;
 import com.ddlottery.tools.tools;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by ElNino on 16/2/1.
@@ -27,32 +30,81 @@ public class couponPage {
     DDbusinessMapper DDbusinessMapper;
 
     @Autowired
+    DDbusinessService DDbusinessService;
+
+    @Autowired
     DDcouponMapper DDcouponMapper;
 
+    @Autowired
+    DDcouponService DDcouponService;
 
-    @RequestMapping("coupon_add")
+    @RequestMapping("coupon_list")
+    public ModelAndView coupon_list(Integer page,ModelAndView modelAndView){
+        if(page == null){
+            page = 1;
+        }
+        Map businessListMap = DDcouponService.couponList(page);
+        modelAndView.addObject("couponList",businessListMap.get("list"));
+        modelAndView.addObject("count",businessListMap.get("count"));
+        modelAndView.addObject("page",businessListMap.get("page"));
+        return modelAndView;
+    }
+
+    @RequestMapping("coupon_info_list")
+    public ModelAndView coupon_info_list(Integer cid,Integer page,ModelAndView modelAndView){
+        if(page == null){
+            page = 1;
+        }
+        Map businessListMap = DDcouponService.couponByCid(cid, page);
+        modelAndView.addObject("couponInfoList",businessListMap.get("list"));
+        modelAndView.addObject("count",businessListMap.get("count"));
+        modelAndView.addObject("page",businessListMap.get("page"));
+        modelAndView.addObject("cid",cid);
+        return modelAndView;
+    }
+
+    @RequestMapping("coupon_info")
     public ModelAndView coupon_add(DDcoupon coupon,
                                    String act,
+                                   Integer cid,
                                    String page_starttime,
                                    String page_endtime,
-                                   ModelAndView modelAndView) throws ParseException {
+                                   ModelAndView modelAndView) throws ParseException, UnsupportedEncodingException {
+        Map businessMap = DDbusinessService.business_list(1);
+        modelAndView.addObject("business",businessMap.get("list"));
         if(act == null) {
-            PageBounds pageBounds = new PageBounds(10,1);
-            ArrayList<DDbusiness> businessList = DDbusinessMapper.selectBusiness(pageBounds);
-            modelAndView.addObject("isok","no");
-            modelAndView.addObject("businessList",businessList);
-        }else{
-            Date starttime = tools.stringToDate(page_starttime);
-            Date endtime =  tools.stringToDate(page_endtime);
-            coupon.setStarttime(starttime);
-            coupon.setEndtime(endtime);
-            coupon.setCreattime(new Date());
-            if(act.equals("add")) {
-                DDcouponMapper.insertSelective(coupon);
-                modelAndView.addObject("isok","ok");
-                modelAndView.setViewName("redirect:coupon_add");
-            }
+            modelAndView.addObject("type","add");
+            return modelAndView;
         }
+        if(act.equals("info")){
+            modelAndView.addObject("type","edit");
+            coupon = DDcouponMapper.selectByPrimaryKey(cid);
+            modelAndView.addObject("info",coupon);
+            return modelAndView;
+        }
+        Date starttime = tools.stringToDate(page_starttime);
+        Date endtime =  tools.stringToDate(page_endtime);
+        coupon.setStarttime(starttime);
+        coupon.setEndtime(endtime);
+        coupon.setCreattime(new Date());
+        coupon.setTitle(new String(coupon.getTitle().getBytes("ISO-8859-1"), "utf-8"));
+        if(coupon.getTips() != null) {
+            coupon.setTips(new String(coupon.getTips().getBytes("ISO-8859-1"), "utf-8"));
+        }
+        if (coupon.getFullmuch()>0 && coupon.getTypes()==2){
+            coupon.setTypes((byte)3);
+        }
+        if(act.equals("add")) {
+            DDcouponService.addCoupon(coupon);
+            modelAndView.addObject("isok","ok");
+            modelAndView.setViewName("redirect:coupon_list");
+        }
+        if(act.equals("edit")){
+            DDcouponMapper.updateByPrimaryKeySelective(coupon);
+            modelAndView.addObject("isok","ok");
+            modelAndView.setViewName("redirect:coupon_list");
+        }
+
         return modelAndView;
     }
 

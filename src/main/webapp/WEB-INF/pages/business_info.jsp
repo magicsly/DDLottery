@@ -1,4 +1,7 @@
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,42 +26,7 @@
   <body>
 
     <div id="wrapper">
-
-      <!-- Sidebar -->
-      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">大赢家管理后台</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav side-nav">
-			<li><a href=""><i class="fa fa-dashboard"></i>用户管理</a></li>
-			<li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> 店铺管理 <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">店铺管理</a></li>
-                <li><a href="#">店铺管理</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> 营销管理 <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">营销管理</a></li>
-                <li><a href="#">创建优惠券</a></li>
-                <li><a href="#">优惠券管理</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </nav>
+        <%@ include file="top.jsp"%>
       <div id="page-wrapper">
         <div class="row">
           <div class="col-lg-12">
@@ -68,13 +36,30 @@
 
         <div class="row">
         	<div class="col-lg-12">
-        		<form class="form-horizontal">
+        		<form class="form-horizontal"action="business_info" method="post">
+                    <input type="hidden" name="act" value="${type}">
+                    <input type="hidden" name="bid" value="${info.bid}">
+                    <input type="hidden" name="bimage" value="${info.bimage}" id="bimage">
+                    <input type="hidden" name="saleimg" value="${info.saleimg}" id="saleimg">
+                    <input type="hidden" name="cardimg" value="${info.cardimg}" id="cardimg">
 					  <div class="form-group">
 					    <label for="locname" class="col-sm-2 control-label">彩店名称:</label>
 					    <div class="col-sm-5">
-					      <input class="form-control" id="locname" name="locname">
+					      <input class="form-control" id="locname" name="locname" value="${info.locname}">
 					    </div>
 					  </div>
+                    <div class="form-group">
+                        <label for="mobile" class="col-sm-2 control-label">手机号:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="mobile" name="mobile" value="${info.mobile}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd" class="col-sm-2 control-label">密码:</label>
+                        <div class="col-sm-5">
+                            <input class="form-control" id="pwd" name="pwd">
+                        </div>
+                    </div>
 					  <div class="form-group">
 					    <label for="address" class="col-sm-2 control-label">彩店地址</label>
 					    <div class="col-sm-5">
@@ -93,82 +78,98 @@
 				            </select></div>
 					    </div>
 					    <div class="col-sm-3">
-					      <input class="form-control" id="address" name="address" value="">
+					      <input class="form-control" id="address" name="address" value="${info.address}">
 					    </div>
 					  </div>
-
+                    <div class="form-group">
+                        <label for="cox" class="col-sm-2 control-label">坐标X</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="cox" name="cox" value="${info.cox}">
+                        </div>
+                        <label for="coy" class="col-sm-2 control-label">坐标Y</label>
+                        <div class="col-sm-3">
+                            <input class="form-control" id="coy" name="coy" value="${info.coy}">
+                        </div>
+                    </div>
 					  <div class="form-group">
 					    <label for="saletime" class="col-sm-2 control-label">营业时间</label>
 					    <div class="col-sm-5">
-						<div class="col-sm-5" style="padding:0"><input class="form-control" id="saletime" name="saletime"></div>
+						<div class="col-sm-5" style="padding:0"><input class="form-control" id="saletime" name="saletime" value="${info.saletime}"></div>
 					    </div>
-					  </div>
-
-					  <div class="form-group">
-
-                          <label for="bimage" class="col-sm-2 control-label">彩店照片</label>
-                              <form method="post" id="myform" action="upload" enctype="multipart/form-data">
-                                  <input type="file" name="file">
-                                  <input type="submit" value="提交表单">
-                              </form>
 					  </div>
 					  <div class="form-group">
 					    <label  class="col-sm-2 control-label">营业类型</label>
 					    <div class="col-sm-5">
 						    <label class="checkbox-inline">
-                            <input type="radio"  name="type" value="option1"> 个人
+                            <input type="radio"  name="type" value="0"> 个人
                             </label><label class="checkbox-inline">
-                            <input type="radio"  name="type" value="option2"> 公司
+                            <input type="radio"  name="type" value="1"> 公司
                             </label>
 					    </div>
 					  </div>
 
 					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">运营者姓名:</label>
+					    <label for="realname" class="col-sm-2 control-label">运营者姓名:</label>
 					    <div class="col-sm-5">
-					      <input class="form-control" id="realname" name="realname">
+					      <input class="form-control" id="realname" name="realname" value="${info.realname}">
 					    </div>
 					  </div>
 
 					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">身份证号:</label>
+					    <label for="idcard" class="col-sm-2 control-label">身份证号:</label>
 					    <div class="col-sm-5">
-					      <input class="form-control" id="idcard" name="idcard">
-					    </div>
-					  </div>
-					  <div class="form-group">
-					    <label for="inputPassword3" class="col-sm-2 control-label">身份证照片</label>
-					    <div class="col-sm-5">
-						    <input type="file">
+					      <input class="form-control" id="idcard" name="idcard" value="${info.idcard}">
 					    </div>
 					  </div>
 
 					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">代销证号:</label>
+					    <label for="salecard" class="col-sm-2 control-label">代销证号:</label>
 					    <div class="col-sm-5">
-					      <input class="form-control" id="inputEmail3" placeholder="">
+					      <input class="form-control" id="salecard" name="salecard" value="${info.salecard}">
 					    </div>
 					  </div>
 
 					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">代销证照片:</label>
+					    <label for="salelot" class="col-sm-2 control-label">代销彩种:</label>
 					    <div class="col-sm-5">
-					      <input type="file">
-					    </div>
-					  </div>
-					  <div class="form-group">
-					    <label for="inputEmail3" class="col-sm-2 control-label">代销彩种:</label>
-					    <div class="col-sm-5">
-					      <input class="form-control" id="inputEmail3" placeholder="">
+					      <input class="form-control" id="salelot" name="salelot" value="${info.salelot}">
 					    </div>
 					  </div>
 					  <div class="form-group">
 					    <div class="col-sm-offset-2 col-sm-10">
-					    <button type="submit" class="btn btn-primary btn-sm">保  存</button>
-					      <button type="submit" class="btn btn-primary btn-sm">重置</button>
+					        <button type="submit" class="btn btn-primary btn-sm">保  存</button>
+					        <button type="reset" class="btn btn-primary btn-sm">重置</button>
 					    </div>
 					  </div>
 				</form>
+                <form method="post" id="buimg" action="upload" enctype="multipart/form-data">
+                    <div class="form-group">
+
+                        <label for="bfile" class="col-sm-2 control-label">彩店照片</label>
+                        <div class="col-sm-5">
+                            <input type="file" name="file" id="bfile">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm uploadimg">上传</button>
+                    </div>
+                </form>
+                <form method="post" id="simg" action="upload" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="sfile" class="col-sm-2 control-label">代销证照片:</label>
+                        <div class="col-sm-5">
+                            <input type="file" name="file" id="sfile">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm uploadimg">上传</button>
+                    </div>
+                </form>
+                <form method="post" id="idimg" action="upload" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="ifile" class="col-sm-2 control-label">身份证照片</label>
+                        <div class="col-sm-5">
+                            <input type="file" name="file" id="ifile">
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm uploadimg">上传</button>
+                    </div>
+                </form>
         	</div>
         </div><!-- /.row -->
         <div class="row"></div><!-- /.row -->
@@ -185,7 +186,28 @@
     <script src="js/morris/chart-data-morris.js"></script>
     <script src="js/tablesorter/jquery.tablesorter.js"></script>
     <script src="js/tablesorter/tables.js"></script>
+    <script src="http://malsup.github.io/jquery.form.js"></script>
     <script type="application/javascript">
+        $(".uploadimg").click(function(){
+            var form = $(this).parents("form");
+            var fid = form.attr("id");
+            form.ajaxSubmit({
+                success: function(data) {
+                    if(data.code==0){
+                        if(fid=="buimg"){
+                            $("#bimage").val(data.filename);
+                        }
+                        if(fid=="simg"){
+                            $("#saleimg").val(data.filename);
+                        }
+                        if(fid=="idimg"){
+                            $("#cardimg").val(data.filename);
+                        }
+                        alert("上传成功");
+                    }
+                }
+            });
+        })
 
     </script>
   </body>

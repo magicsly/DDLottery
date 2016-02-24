@@ -1,5 +1,6 @@
 package com.ddlottery.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DDbusiness {
@@ -7,15 +8,21 @@ public class DDbusiness {
 
     private String pwd;
 
-    private String locname;
-
     private String bimage;
+
+    private Byte area;
+
+    private Byte city;
+
+    private String locname;
 
     private String address;
 
-    private Float cox;
+    private String salelot;
 
-    private Float coy;
+    private BigDecimal cox;
+
+    private BigDecimal coy;
 
     private String bname;
 
@@ -45,6 +52,8 @@ public class DDbusiness {
 
     private Float money;
 
+    private Float outmoney;
+
     private Date creattime;
 
     private Date logintime;
@@ -69,20 +78,36 @@ public class DDbusiness {
         this.pwd = pwd == null ? null : pwd.trim();
     }
 
-    public String getLocname() {
-        return locname;
-    }
-
-    public void setLocname(String locname) {
-        this.locname = locname == null ? null : locname.trim();
-    }
-
     public String getBimage() {
         return bimage;
     }
 
     public void setBimage(String bimage) {
         this.bimage = bimage == null ? null : bimage.trim();
+    }
+
+    public Byte getArea() {
+        return area;
+    }
+
+    public void setArea(Byte area) {
+        this.area = area;
+    }
+
+    public Byte getCity() {
+        return city;
+    }
+
+    public void setCity(Byte city) {
+        this.city = city;
+    }
+
+    public String getLocname() {
+        return locname;
+    }
+
+    public void setLocname(String locname) {
+        this.locname = locname == null ? null : locname.trim();
     }
 
     public String getAddress() {
@@ -93,19 +118,27 @@ public class DDbusiness {
         this.address = address == null ? null : address.trim();
     }
 
-    public Float getCox() {
+    public String getSalelot() {
+        return salelot;
+    }
+
+    public void setSalelot(String salelot) {
+        this.salelot = salelot == null ? null : salelot.trim();
+    }
+
+    public BigDecimal getCox() {
         return cox;
     }
 
-    public void setCox(Float cox) {
+    public void setCox(BigDecimal cox) {
         this.cox = cox;
     }
 
-    public Float getCoy() {
+    public BigDecimal getCoy() {
         return coy;
     }
 
-    public void setCoy(Float coy) {
+    public void setCoy(BigDecimal coy) {
         this.coy = coy;
     }
 
@@ -221,6 +254,14 @@ public class DDbusiness {
         this.money = money;
     }
 
+    public Float getOutmoney() {
+        return outmoney;
+    }
+
+    public void setOutmoney(Float outmoney) {
+        this.outmoney = outmoney;
+    }
+
     public Date getCreattime() {
         return creattime;
     }
@@ -252,5 +293,4 @@ public class DDbusiness {
     public void setState(Byte state) {
         this.state = state;
     }
-
 }
