@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ddlottery.dao.DDaccountMapper" >
+  <resultMap id="BaseResultMap" type="com.ddlottery.model.DDaccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="money" property="money" jdbcType="REAL" />
+    <result column="nowmoney" property="nowmoney" jdbcType="REAL" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="bname" property="bname" jdbcType="VARCHAR" />
+    <result column="creattime" property="creattime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="ip" property="ip" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, money, nowmoney, msg, bid, bname, creattime, state, ip
+  </sql>
+    <select id="selectByBid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from dd_account
+        where bid = #{bid,jdbcType=INTEGER}
+    </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from dd_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from dd_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ddlottery.model.DDaccount" >
+    insert into dd_account (id, type, money, 
+      nowmoney, msg, bid, bname, 
+      creattime, state, ip
+      )
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, #{money,jdbcType=REAL}, 
+      #{nowmoney,jdbcType=REAL}, #{msg,jdbcType=VARCHAR}, #{bid,jdbcType=INTEGER}, #{bname,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, #{ip,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ddlottery.model.DDaccount" >
+    insert into dd_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="nowmoney != null" >
+        nowmoney,
+      </if>
+      <if test="msg != null" >
+        msg,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="bname != null" >
+        bname,
+      </if>
+      <if test="creattime != null" >
+        creattime,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=REAL},
+      </if>
+      <if test="nowmoney != null" >
+        #{nowmoney,jdbcType=REAL},
+      </if>
+      <if test="msg != null" >
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="bname != null" >
+        #{bname,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddlottery.model.DDaccount" >
+    update dd_account
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=REAL},
+      </if>
+      <if test="nowmoney != null" >
+        nowmoney = #{nowmoney,jdbcType=REAL},
+      </if>
+      <if test="msg != null" >
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="bname != null" >
+        bname = #{bname,jdbcType=VARCHAR},
+      </if>
+      <if test="creattime != null" >
+        creattime = #{creattime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddlottery.model.DDaccount" >
+    update dd_account
+    set type = #{type,jdbcType=TINYINT},
+      money = #{money,jdbcType=REAL},
+      nowmoney = #{nowmoney,jdbcType=REAL},
+      msg = #{msg,jdbcType=VARCHAR},
+      bid = #{bid,jdbcType=INTEGER},
+      bname = #{bname,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=TINYINT},
+      ip = #{ip,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
