@@ -2,6 +2,7 @@ package com.ddlottery.page;
 
 import com.ddlottery.dao.DDbusinessMapper;
 import com.ddlottery.model.DDbusiness;
+import com.ddlottery.service.DDaccountService;
 import com.ddlottery.service.DDbusinessService;
 import com.ddlottery.tools.uploadFiles;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -31,23 +32,38 @@ public class businessPage {
     @Autowired
     DDbusinessMapper DDbusinessMapper;
 
+    @Autowired
+    DDaccountService DDaccountService;
+
     @RequestMapping("business_order")
     public ModelAndView md5(String bid,ModelAndView modelAndView){
-        String codes = DigestUtils.md5Hex(bid + DDbusinessService.md5key);
+        String codes = DigestUtils.md5Hex(bid + "123456");
         modelAndView.addObject("md5", codes);
         return modelAndView;
     }
 
     @RequestMapping("business_list")
-    public ModelAndView business_list(Integer page,ModelAndView modelAndView){
+    public ModelAndView business_list(Integer page,
+                                      Byte area,
+                                      Byte city,
+                                      ModelAndView modelAndView){
         if(page == null){
             page = 1;
         }
         if(page < 1){
             page = 1;
         }
-        Map businessListMap = DDbusinessService.business_list(page);
-        modelAndView.addObject("businessList",businessListMap.get("list"));
+        DDbusiness business = new DDbusiness();
+        if(area!=null){
+            if(area.intValue()!= 0){
+                business.setArea(area);
+                business.setCity(city);
+            }
+        }
+
+
+        Map businessListMap = DDbusinessService.business_list(business,page);
+        modelAndView.addObject("businessList", businessListMap.get("list"));
         modelAndView.addObject("count",businessListMap.get("count"));
         modelAndView.addObject("page",businessListMap.get("page"));
         return modelAndView;
@@ -75,6 +91,8 @@ public class businessPage {
         business.setSalelot(new String(business.getSalelot().getBytes("ISO-8859-1"), "utf-8"));
         business.setSaletime(new String(business.getSaletime().getBytes("ISO-8859-1"), "utf-8"));
         business.setRealname(new String(business.getRealname().getBytes("ISO-8859-1"),"utf-8"));
+        business.setBank(new String(business.getBank().getBytes("ISO-8859-1"), "utf-8"));
+        business.setBankname(new String(business.getBankname().getBytes("ISO-8859-1"), "utf-8"));
         if(act.equals("add")){
             business.setBid(null);
             DDbusinessService.addBusiness(business);
@@ -86,11 +104,26 @@ public class businessPage {
                 String md5pw = DigestUtils.md5Hex(business.getPwd());
                 business.setPwd(md5pw);
             }else {
-                business.setPwd("");
+                business.setPwd(null);
             }
             DDbusinessMapper.updateByPrimaryKeySelective(business);
             modelAndView.addObject("isok","ok");
             modelAndView.setViewName("redirect:business_list");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping("business_recharge")
+    public ModelAndView business_recharge(String act,Integer bid,Float money,ModelAndView modelAndView){
+        if(act.equals("add")){
+           if(DDaccountService.AccountRecharge(bid,money,"活动充值")==0){
+               modelAndView.addObject("isok","ok");
+               modelAndView.setViewName("redirect:business_list");
+           }
+        }
+        if(act.equals("info")){
+            DDbusiness business = DDbusinessMapper.selectByPrimaryKey(bid);
+            modelAndView.addObject("info",business);
         }
         return modelAndView;
     }

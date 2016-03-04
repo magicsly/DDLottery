@@ -3,6 +3,7 @@ package com.ddlottery.service;
 import com.ddlottery.model.DDbusiness;
 import com.ddlottery.dao.DDbusinessMapper;
 
+import com.ddlottery.tools.tools;
 import com.github.miemiedev.mybatis.paginator.domain.PageBounds;
 import com.github.miemiedev.mybatis.paginator.domain.PageList;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -41,12 +42,19 @@ public class DDbusinessService {
     }
 
     public Map nearBusiness(BigDecimal cox, BigDecimal coy,Integer page){
+        tools tools = new tools();
         Map<String, Object> map = new HashMap<String, Object>();
         DDbusiness business = new DDbusiness();
         business.setCox(cox);
         business.setCoy(coy);
         PageBounds pageBounds = new PageBounds(page,pageSize);
-        ArrayList list = DDbusinessMapper.nearBusiness(business,pageBounds);
+        ArrayList<Map> list = DDbusinessMapper.nearBusiness(business,pageBounds);
+        for(Map bs : list){
+            BigDecimal x = (BigDecimal) bs.get("cox");
+            BigDecimal y = (BigDecimal) bs.get("coy");
+            double leng =tools.distHaversineRAD(cox.doubleValue(),coy.doubleValue(),x.doubleValue(),y.doubleValue());
+            bs.put("leng",leng);
+        }
         PageList pageList = (PageList)list;
         map.put("code",0);
         map.put("list",list);
@@ -93,10 +101,10 @@ public class DDbusinessService {
         return DDbusinessMapper.selectByPrimaryKey(bid);
     }
 
-    public Map business_list(Integer page){
+    public Map business_list(DDbusiness business , Integer page){
         Map<String, Object> map = new HashMap<String, Object>();
         PageBounds pageBounds = new PageBounds(page,pageSize);
-        ArrayList list = DDbusinessMapper.selectBusiness(pageBounds);
+        ArrayList list = DDbusinessMapper.selectBusiness(business,pageBounds);
         PageList pageList = (PageList)list;
         map.put("code",0);
         map.put("list",list);

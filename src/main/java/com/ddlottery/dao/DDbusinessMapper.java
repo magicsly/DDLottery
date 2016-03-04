@@ -21,7 +21,7 @@ public interface DDbusinessMapper {
 
     int updateByPrimaryKey(DDbusiness record);
 
-    ArrayList<DDbusiness> selectBusiness(PageBounds pageBounds);
+    ArrayList<DDbusiness> selectBusiness(DDbusiness record,PageBounds pageBounds);
 
     ArrayList<Map> nearBusiness(DDbusiness record,PageBounds pageBounds);
 

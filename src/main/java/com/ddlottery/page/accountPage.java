@@ -28,4 +28,17 @@ public class accountPage {
         modelAndView.addObject("page",businessListMap.get("page"));
         return modelAndView;
     }
+
+    @RequestMapping("business_account")
+    public ModelAndView business_account(Integer bid,Integer page,ModelAndView modelAndView){
+        if(page == null){
+            page = 1;
+        }
+        Map accountListMap = DDaccountService.busineeAccountList(bid, page);
+        modelAndView.addObject("accountList",accountListMap.get("list"));
+        modelAndView.addObject("count",accountListMap.get("count"));
+        modelAndView.addObject("page",accountListMap.get("page"));
+        modelAndView.addObject("bid",bid);
+        return modelAndView;
+    }
 }

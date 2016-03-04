@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- Sidebar -->
+<%
+    HttpSession s = request.getSession();
+    Object admin = s.getAttribute("admin");
+    if(admin == null){
+        response.setHeader("Refresh","0;url=adminlogin");
+        return;
+    }
+%>
 <!-- Sidebar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -10,7 +17,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">DDLottery</a>
+        <a class="navbar-brand" href="index.html">苋菜管理后台</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -23,9 +30,9 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-caret-square-o-down"></i> 系统管理 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="">系统用户</a></li>
+                    <li><a href="admin_list">系统用户</a></li>
                     <li><a href="">统计</a></li>
-                    <li><a href="">退出</a></li>
+                    <li><a href="adminlogout">退出</a></li>
                 </ul>
             </li>
         </ul>

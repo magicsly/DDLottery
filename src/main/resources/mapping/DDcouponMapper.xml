@@ -23,10 +23,10 @@
     cid, title, types, money, num, restnum, usenum, bid, bname, fullmuch, starttime, 
     endtime, limitnum, tips, creattime, states
   </sql>
-    <select id="selectFullmuchCount" resultType="lang.Integer" parameterType="com.ddlottery.model.DDcoupon" >
+    <select id="selectFullmuchCount" resultType="java.lang.Integer" parameterType="com.ddlottery.model.DDcoupon" >
       select count(0) from dd_coupon WHERE
       bid = #{bid,jdbcType=INTEGER} AND fullmuch = #{fullmuch,jdbcType=REAL}
-      AND restnum>0 AND endtime > now()
+      AND restnum>0 AND endtime > #{starttime,jdbcType=TIMESTAMP}
     </select>
   <select id="selectByBid" resultType="java.util.HashMap" parameterType="java.lang.Integer" >
         <![CDATA[

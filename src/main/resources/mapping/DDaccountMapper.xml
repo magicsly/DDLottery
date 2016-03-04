@@ -21,6 +21,7 @@
         <include refid="Base_Column_List" />
         from dd_account
         where bid = #{bid,jdbcType=INTEGER}
+        ORDER BY id DESC
     </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

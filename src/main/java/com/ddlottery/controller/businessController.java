@@ -78,7 +78,12 @@ public class businessController extends baseController{
     ){
         Integer code = DDbusinessService.machLogin(mobile,key);
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("code",code);
+        if(code >= 0){
+            map.put("code",0);
+            map.put("bid",code);
+        }else {
+            map.put("code",-1);
+        }
         return map;
     }
 
@@ -125,7 +130,8 @@ public class businessController extends baseController{
     @ResponseBody
     public Map business_List(@RequestParam(value="page",defaultValue = "1",required=false) Integer page
     ){
-        Map<String,Object> map = DDbusinessService.business_list(page);
+        DDbusiness business = new DDbusiness();
+        Map<String,Object> map = DDbusinessService.business_list(business,page);
         return map;
     }
 
@@ -152,4 +158,6 @@ public class businessController extends baseController{
         map.put("code",code);
         return map;
     }
+
+
 }

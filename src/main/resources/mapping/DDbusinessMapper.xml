@@ -69,6 +69,13 @@
         bankcode, saletime, salelot ,type, cardimg, saleimg, businessimg, salecard, money, outmoney,creattime,
         logintime, ip, state
         from dd_business
+        WHERE 1=1
+      <if test="area != null" >
+          AND area = #{area,jdbcType=TINYINT}
+      </if>
+      <if test="city != null" >
+          AND city = #{city,jdbcType=TINYINT}
+      </if>
     </select>
     <select id="selectByMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select

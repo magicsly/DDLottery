@@ -62,7 +62,9 @@ public class couponController {
         coupon.setMoney(money);
         coupon.setFullmuch(fullmuch);
         coupon.setStarttime(tools.stringToDate(starttime));
-        coupon.setEndtime(tools.stringToDate(endtime));
+        Date et =  tools.stringToDate(endtime);
+        et.setTime(et.getTime()+1000 * 60 * 60 * 24-1);
+        coupon.setEndtime(et);
         coupon.setLimitnum(limitnum);
         coupon.setTips(tips);
         Integer code = DDcouponService.addCoupon(coupon);

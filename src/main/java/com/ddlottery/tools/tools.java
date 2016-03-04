@@ -1,6 +1,7 @@
 package com.ddlottery.tools;
 
 import com.alibaba.fastjson.JSON;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
@@ -26,9 +27,9 @@ public class tools {
 //        Document doc = Jsoup.connect(url).get();
 
         SendSMS ss = new SendSMS();
-        ss.setUsername("554148");
-        ss.setPassword("e10adc3949ba59abbe56e057f20f883e");
-        ss.setMessage(msg);
+        ss.setUsername("652678");
+        ss.setPassword("f8d3d865051a71a037881c86e94c1881");
+        ss.setMessage(msg+"【苋菜】");
         ss.setMobiles(mobile);
         ss.setServicesRequestAddRess("http://sms.c8686.com/Api/BayouSmsApiEx.aspx");
         ss.setSmstype(0);
@@ -67,5 +68,33 @@ public class tools {
         date = java.sql.Date.valueOf(str);
 
         return date;
+    }
+
+//    public double distHaversineRAD(double lat1, double lon1, double lat2, double lon2) {
+//        double hsinX = Math.sin((lon1 - lon2) * 0.5);
+//        double hsinY = Math.sin((lat1 - lat2) * 0.5);
+//        double h = hsinY * hsinY +
+//                (Math.cos(lat1) * Math.cos(lat2) * hsinX * hsinX);
+//        return 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h)) * 6367000;
+//    }
+
+    private   static double EARTH_RADIUS = 6378.137;//地球半径
+    private static double rad(double d)
+    {
+        return d * Math.PI / 180.0;
+    }
+
+    public static double distHaversineRAD(double lat1, double lng1, double lat2, double lng2)
+    {
+        double radLat1 = rad(lat1);
+        double radLat2 = rad(lat2);
+        double a = radLat1 - radLat2;
+        double b = rad(lng1) - rad(lng2);
+
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+                Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS;
+//        s = Math.round(s * 10000) / 10000;
+        return s;
     }
 }

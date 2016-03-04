@@ -163,7 +163,10 @@ public class SlipJCZQ8 implements ISlipJCZQ {
 	}
 	
 	private void markPassMode(OmrArea oa, Bet bet){
-		oa.mark(mapPass.get(Pass.valueOf("PASS"+bet.getPass().replace('*', '_'))));
+		Pass pass = Pass.valueOf("PASS"+bet.getPass().replace('*', '_'));
+		if (pass != Pass.PASS1_1) {
+			oa.mark(mapPass.get(pass));
+		}
 	}
 	
 	private void markMatch(OmrArea oa, Item item) throws Exception{

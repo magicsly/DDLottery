@@ -139,4 +139,24 @@ public class DDaccountService {
         return 0;
     }
 
+    public Integer AccountRecharge(Integer bid, Float money,String msg){
+        SqlSession session = sqlSessionFactory.openSession(false);
+        DDbusiness business = DDbusinessMapper.selectByPrimaryKey(bid);
+        business.setMoney(business.getMoney()+money);
+        DDbusinessMapper.updateByPrimaryKeySelective(business);
+        DDaccount account = new DDaccount();
+        account.setBid(business.getBid());
+        account.setBname(business.getBname());
+        account.setMoney(money);
+        account.setNowmoney(business.getMoney());
+        account.setType((byte) 1);
+        account.setState((byte) 0);
+        account.setCreattime(new Date());
+        account.setMsg(msg);
+        DDaccountMapper.insertSelective(account);
+        session.commit();
+        session.close();
+        return 0;
+    }
+
 }

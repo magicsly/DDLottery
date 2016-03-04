@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard - SB Admin</title>
+    <title>苋菜 - 优惠券管理</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <!-- Add custom CSS here -->
@@ -98,20 +98,15 @@
                                 <span class="btn btn-danger btn-xs">关闭</span>
                             </c:if>
                         </td>
-	                    <td class="xq_type"><a href="" >编辑</a><em>|</em><a href="coupon_info_list?cid=${list.cid}">明细</a><em>|</em><a href="">作废</a></td>
+	                    <td class="xq_type"><a href="coupon_info?act=info&cid=${list.cid}">编辑</a><em>|</em><a href="coupon_info_list?cid=${list.cid}">明细</a><em>|</em><a href="">作废</a></td>
 	                  </tr>
                     </c:forEach>
-	                  <tr>
-                          <td colspan="9" class="page_box">
-                              <span class="listtable_all">共有${count}条，第${page}页</span>
-                              <ul class="pagination">
-                                  <li><a href="?page=1">首页</a></li>
-                                  <li><a href="?page=${page-1}">前一页</a></li>
-                                  <li><a href="?page=${page+1}">后一页</a></li>
-                                  <li><a href="?page=${count%20+1}">末页</a></li>
-                              </ul>
-                          </td>
-	                  </tr>
+                    <tr>
+                        <td colspan="9" class="page_box">
+                            <span class="listtable_all">共有${count}条，第${page}页</span>
+                            <ul id="pagination"></ul>
+                        </td>
+                    </tr>
 	                </tbody>
 	              </table>
 	            </div>
@@ -129,11 +124,16 @@
     <!-- JavaScript -->
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
-    <!-- Page Specific Plugins -->    <script src="js/raphael-min.js"></script>
-    <script src="js/morris-0.4.3.min.js"></script>
-    <script src="js/morris/chart-data-morris.js"></script>
-    <script src="js/tablesorter/jquery.tablesorter.js"></script>
-    <script src="js/tablesorter/tables.js"></script>
-
+    <script src="js/jquery.twbsPagination.min.js"></script>
+    <script>
+        $(function(){
+            var count = ${count};
+            $("#pagination").twbsPagination({
+                totalPages:Math.ceil(count / 20),
+                visiblePages: 5,
+                href: '?page={{number}}'
+            });
+        })
+    </script>
   </body>
 </html>

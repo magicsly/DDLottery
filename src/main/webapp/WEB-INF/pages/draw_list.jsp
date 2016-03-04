@@ -9,14 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Dashboard - SB Admin</title>
+    <title>苋菜 - 提款管理</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    <!-- Add custom CSS here -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
-    <!-- Page Specific CSS -->
-    <link rel="stylesheet" href="css/morris-0.4.3.min.css">
+    <link href="css/jquery-confirm.css" rel="stylesheet">
     <link rel="stylesheet" href="css/dyj.css">
 </head>
 
@@ -83,12 +81,7 @@
                         <tr>
                             <td colspan="10" class="page_box">
                                 <span class="listtable_all">共有${count}条，第${page}页</span>
-                                <ul class="pagination">
-                                    <li><a href="?page=1">首页</a></li>
-                                    <li><a href="?page=${page-1}">前一页</a></li>
-                                    <li><a href="?page=${page+1}">后一页</a></li>
-                                    <li><a href="?page=${count%20+1}">末页</a></li>
-                                </ul>
+                                <ul id="pagination"></ul>
                             </td>
                         </tr>
                     </table>
@@ -107,43 +100,69 @@
 <!-- JavaScript -->
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/raphael-min.js"></script>
-<script src="js/morris-0.4.3.min.js"></script>
-<script src="js/morris/chart-data-morris.js"></script>
-<script src="js/tablesorter/jquery.tablesorter.js"></script>
-<script src="js/tablesorter/tables.js"></script>
+<script src="js/jquery-confirm.js"></script>
+<script src="js/jquery.twbsPagination.min.js"></script>
 <script>
     $(function() {
-       $(".sure").click(function(){
-           var tr = $(this).parents("tr")
-           var did = tr.find("#did").text();
-           $.ajax({
-               type: "POST",
-               url: "drawstate?id="+did+"&state=1",
-               data:{},
-               success: function(data){
-                    tr.find("#state").html('<span class="btn btn-success btn-xs">提款成功</span>');
-               },
-               error: function(){
-                   alert("出错");
-               }
-           });
-       });
-        $(".cancel").click(function(){
-            var tr = $(this).parents("tr")
+        var count = ${count};
+        $("#pagination").twbsPagination({
+            totalPages:Math.ceil(count / 20),
+            visiblePages: 5,
+            href: '?page={{number}}'
+        });
+
+        $(".sure").click(function(){
+            var tr = $(this).parents("tr");
             var did = tr.find("#did").text();
-            $.ajax({
-                type: "POST",
-                url: "drawstate?id="+did+"&state=2",
-                data:{},
-                success: function(data){
-                    tr.find("#state").html('<span class="btn btn-danger btn-xs">提款撤销</span>');
-                },
-                error: function(){
-                    alert("出错");
+            $.confirm({
+                title: '信息!',
+                content: '你是否确认提款!',
+                confirmButton: '确认',
+                cancelButton: '取消',
+                animation: 'rotateX',
+                closeAnimation: 'rotateXR',
+                confirm: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "drawstate?id=" + did + "&state=1",
+                        data: {},
+                        success: function (data) {
+                            tr.find("#state").html('<span class="btn btn-success btn-xs">提款成功</span>');
+                            $.alert("操作成功")
+                        },
+                        error: function () {
+                            $.alert("操作出错");
+                        }
+                    });
                 }
             });
-        })
+        });
+        $(".cancel").click(function(){
+            var tr = $(this).parents("tr");
+            var did = tr.find("#did").text();
+            $.confirm({
+                title: '信息!',
+                content: '你是否撤销提款!',
+                confirmButton: '确认',
+                cancelButton: '取消',
+                animation: 'rotateX',
+                closeAnimation: 'rotateXR',
+                confirm: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "drawstate?id=" + did + "&state=1",
+                        data: {},
+                        success: function (data) {
+                            tr.find("#state").html('<span class="btn btn-danger btn-xs">提款撤销</span>');
+                            $.alert("操作成功")
+                        },
+                        error: function () {
+                            $.alert("操作出错");
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 </body>

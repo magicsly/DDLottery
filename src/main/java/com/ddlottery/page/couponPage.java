@@ -43,10 +43,10 @@ public class couponPage {
         if(page == null){
             page = 1;
         }
-        Map businessListMap = DDcouponService.couponList(page);
-        modelAndView.addObject("couponList",businessListMap.get("list"));
-        modelAndView.addObject("count",businessListMap.get("count"));
-        modelAndView.addObject("page",businessListMap.get("page"));
+        Map couponListMap = DDcouponService.couponList(page);
+        modelAndView.addObject("couponList",couponListMap.get("list"));
+        modelAndView.addObject("count",couponListMap.get("count"));
+        modelAndView.addObject("page",couponListMap.get("page"));
         return modelAndView;
     }
 
@@ -55,10 +55,10 @@ public class couponPage {
         if(page == null){
             page = 1;
         }
-        Map businessListMap = DDcouponService.couponByCid(cid, page);
-        modelAndView.addObject("couponInfoList",businessListMap.get("list"));
-        modelAndView.addObject("count",businessListMap.get("count"));
-        modelAndView.addObject("page",businessListMap.get("page"));
+        Map couponinfListMap = DDcouponService.couponByCid(cid, page);
+        modelAndView.addObject("couponInfoList",couponinfListMap.get("list"));
+        modelAndView.addObject("count",couponinfListMap.get("count"));
+        modelAndView.addObject("page",couponinfListMap.get("page"));
         modelAndView.addObject("cid",cid);
         return modelAndView;
     }
@@ -70,7 +70,8 @@ public class couponPage {
                                    String page_starttime,
                                    String page_endtime,
                                    ModelAndView modelAndView) throws ParseException, UnsupportedEncodingException {
-        Map businessMap = DDbusinessService.business_list(1);
+        DDbusiness business = new DDbusiness();
+        Map businessMap = DDbusinessService.business_list(business,1);
         modelAndView.addObject("business",businessMap.get("list"));
         if(act == null) {
             modelAndView.addObject("type","add");
@@ -83,16 +84,19 @@ public class couponPage {
             return modelAndView;
         }
         Date starttime = tools.stringToDate(page_starttime);
-        Date endtime =  tools.stringToDate(page_endtime);
         coupon.setStarttime(starttime);
-        coupon.setEndtime(endtime);
+        Date et =  tools.stringToDate(page_endtime);
+        et.setTime(et.getTime()+1000 * 60 * 60 * 24-1);
+        coupon.setEndtime(et);
         coupon.setCreattime(new Date());
         coupon.setTitle(new String(coupon.getTitle().getBytes("ISO-8859-1"), "utf-8"));
         if(coupon.getTips() != null) {
             coupon.setTips(new String(coupon.getTips().getBytes("ISO-8859-1"), "utf-8"));
         }
-        if (coupon.getFullmuch()>0 && coupon.getTypes()==2){
-            coupon.setTypes((byte)3);
+        if(coupon.getTypes() !=1) {
+            if (coupon.getFullmuch() > 0 && coupon.getTypes() == 2) {
+                coupon.setTypes((byte) 3);
+            }
         }
         if(act.equals("add")) {
             DDcouponService.addCoupon(coupon);

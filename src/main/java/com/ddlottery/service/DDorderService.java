@@ -51,10 +51,13 @@ public class DDorderService {
     }
 
     public Integer userPrintOrder(Integer oid, Integer bid){
-        DDorder order = new DDorder();
-        order.setOid(oid);
+        DDorder order = DDorderMapper.selectByPrimaryKey(oid);
+        if(order.getClosetime().getTime()<new Date().getTime()){
+            return 1;
+        }
         order.setBid(bid);
         order.setState((byte)2);
+        DDorderMapper.updateByPrimaryKeySelective(order);
         return 0;
     }
 
@@ -66,13 +69,14 @@ public class DDorderService {
         List matchList = tools.getMatch(matchs);
         map.put("code",0);
         map.put("info",order);
+        map.put("nowtime",new Date());
         map.put("match",matchList);
         return map;
     }
 
     public Map machineGetOrder(Integer bid , String md5Code) throws Exception {
         Map<String,Object> map = new HashMap<String, Object>();
-        String md5 = DigestUtils.md5Hex(bid.toString() + DDbusinessService.md5key);
+        String md5 = DigestUtils.md5Hex(bid.toString() + "123456");
         if(md5.equals(md5Code) || md5Code.equals("cym")){
             DDorderMapper.machUpdateList(bid);
             ArrayList<DDorder> list = DDorderMapper.machOrderList(bid);
@@ -91,7 +95,7 @@ public class DDorderService {
     }
 
     public Integer machinePrintOrder(Integer oid, String md5Code){
-        String str = DigestUtils.md5Hex(oid.toString() + DDbusinessService.md5key);
+        String str = DigestUtils.md5Hex(oid.toString() + "123456");
         if(str.equals(md5Code)){
             DDorder order = new DDorder();
             order.setOid(oid);
